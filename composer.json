@@ -38,5 +38,8 @@
                 "Twigger\\Tests\\TranslationServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always --process-isolation --verbose --configuration phpunit.xml"
     }
 }
