@@ -33,6 +33,9 @@ class TranslationManager
      */
     protected $customCreators = [];
 
+    protected $configuration = [];
+
+    protected $defaultDriver;
     /**
      * Create a new Translation manager instance.
      *
@@ -67,17 +70,12 @@ class TranslationManager
     {
         $config = $this->configurationFor($name);
 
-        if (is_null($config)) {
-            throw new InvalidArgumentException("Translator [{$name}] is not defined.");
+        if(!array_key_exists('driver', $config) && $config['driver']) {
+            throw new \Exception(sprintf('Translation configuration does not supply a driver'));
         }
         if (isset($this->customCreators[$config['driver']])) {
-            return $this->createTranslator($this->callCustomCreator($config));
-        }
-
-        $driverMethod = 'create'.Str::studly($config['driver']).'Driver';
-
-        if (method_exists($this, $driverMethod)) {
-            return $this->createTranslator($this->{$driverMethod}($config));
+            return $this->container->make(TranslationFactory::class)
+                ->create($this->callCustomCreator($config));
         }
 
         throw new InvalidArgumentException("Driver [{$config['driver']}] is not supported.");
@@ -102,11 +100,12 @@ class TranslationManager
      */
     protected function configurationFor($name)
     {
-        $config = $this->container['config']["support.translators.{$name}"];
-        if(is_null($config)) {
-            return null;
+        if(array_key_exists($name, $this->configuration)) {
+            return $this->configuration[$name];
         }
-        return $config;
+
+        throw new InvalidArgumentException("Translator [{$name}] is not defined.");
+
     }
 
     /**
@@ -116,7 +115,7 @@ class TranslationManager
      */
     public function getDefaultDriver()
     {
-        return $this->container['config']['support.translators.default'];
+        return $this->defaultDriver;
     }
 
     /**
@@ -126,29 +125,21 @@ class TranslationManager
      * @param  \Closure  $callback
      * @return $this
      */
-    public function extend($driver, Closure $callback)
+    public function pushDriver(string $driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback->bindTo($this, $this);
 
         return $this;
     }
 
-    /**
-     * Dynamically call the default driver instance.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
-     */
-    public function __call($method, $parameters)
+    public function pushConfiguration(string $name, array $configuration)
     {
-        return $this->driver()->$method(...$parameters);
+        $this->configuration[$name] = $configuration;
     }
 
-    private function createTranslator(Translator $translator)
+    public function setDefaultDriver(string $driver)
     {
-        return $this->container->make(TranslationFactory::class)
-            ->create($translator);
+        $this->defaultDriver = $driver;
     }
 
 }
