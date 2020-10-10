@@ -12,7 +12,7 @@ class CookieDetectionStrategy extends DetectionStrategy
 {
 
     /**
-     * Request that holds the cookies
+     * Requests that holds the cookies
      *
      * @var Request
      */

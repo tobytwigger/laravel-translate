@@ -21,7 +21,11 @@
     "require-dev": {
         "phpunit/phpunit": "^9.4",
         "phpspec/prophecy-phpunit": "^2.0",
-        "orchestra/testbench": "^6.2"
+        "orchestra/testbench": "^6.2",
+        "aws/aws-sdk-php": "^3.158"
+    },
+    "suggest": {
+        "aws/aws-sdk-php": "Needed for the AWS Translator"
     },
     "autoload": {
         "psr-4": {

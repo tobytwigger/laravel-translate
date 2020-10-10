@@ -2,6 +2,7 @@
 
 namespace Twigger\Translate\Http\Controllers;
 
+use Twigger\Translate\Http\Requests\TranslationControllerRequest;
 use Twigger\Translate\Locale\Detect;
 use Twigger\Translate\Translate;
 use Illuminate\Http\Request;
@@ -9,13 +10,14 @@ use Illuminate\Http\Request;
 class TranslationController
 {
 
-    public function translate(Request $request)
+    public function translate(TranslationControllerRequest $request)
     {
-        dd(Translate::translate(            $request->input('line'), 'fr'));
+
         $lang = \Twigger\Translate\Detect::lang();
-        if ($lang === null) {
-            return 'no';
-        }
+        $sourceLang = config('laravel-translate.default_language', 'en');
+
+
+
         return Translate::translate(
             $request->input('line'),
             $lang

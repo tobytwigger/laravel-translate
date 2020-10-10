@@ -58,7 +58,7 @@ class TranslationServiceProvider extends ServiceProvider
         ($this->app->make(DetectionStrategyStore::class))->registerLast(HeaderDetectionStrategy::class);
         ($this->app->make(DetectionStrategyStore::class))->registerLast(LaravelDetectionStrategy::class);
 
-        Route::post('/_translate', [TranslationController::class, 'translate'])->name('translator.translate');
+        Route::post(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])->name('translator.translate');
 
         app(TranslationFactory::class)->intercept(CacheInterceptor::class);
         app(TranslationFactory::class)->intercept(DatabaseInterceptor::class);
