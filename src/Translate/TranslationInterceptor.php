@@ -16,7 +16,7 @@ abstract class TranslationInterceptor extends Translator
         $this->translator = $translator;
     }
 
-    public function translate(string $line, string $lang): ?string
+    public function translate(string $line, string $to, string $from): ?string
     {
         if($this->canIntercept($line, $lang)) {
             return $this->get($line, $lang);
@@ -31,7 +31,7 @@ abstract class TranslationInterceptor extends Translator
         return $result;
     }
 
-    public function translateMany(array $lines, string $lang)
+    public function translateMany(array $lines, string $to, string $from): array
     {
         $interceptionKeyMap = [];
         $translationKeyMap = [];

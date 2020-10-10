@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class AWSTranslator extends Translator
 {
 
-    public function translate(string $line, string $lang): string
+    public function translate(string $line, string $to, string $from): string
     {
         $config = [
             'version' => $this->getConfig('version'),
