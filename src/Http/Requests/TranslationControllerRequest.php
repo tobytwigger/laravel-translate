@@ -3,6 +3,8 @@
 namespace Twigger\Translate\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use Twigger\Translate\Detect;
 
 class TranslationControllerRequest extends FormRequest
 {
@@ -15,9 +17,26 @@ class TranslationControllerRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'line' => 'required_without:lines|string',
+            'lines' => 'required_without:line|array',
+            'lines.*' => 'string',
+            'target_lang' => 'required|iso_language_code',
+            'source_lang' => 'sometimes|iso_language_code'
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * Add the target language to the request
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'target_lang' => $this->input('target_lang', Detect::lang())
+        ]);
     }
 
     /**

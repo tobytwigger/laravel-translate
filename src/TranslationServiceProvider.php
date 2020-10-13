@@ -2,6 +2,7 @@
 
 namespace Twigger\Translate;
 
+use Illuminate\Support\Facades\Validator;
 use Twigger\Translate\Http\Controllers\TranslationController;
 use Twigger\Translate\Locale\Strategies\BodyDetectionStrategy;
 use Twigger\Translate\Locale\Strategies\CookieDetectionStrategy;
@@ -71,6 +72,10 @@ class TranslationServiceProvider extends ServiceProvider
 
         Translate::pushDriver('null', function($app, $config) {
             return new NullTranslator($config);
+        });
+
+        Validator::extend('iso_language_code', function ($attribute, $value, $parameters, $validator) {
+            return is_string($value) && (strlen($value) === 2 || strlen($value) === 5);
         });
     }
 
