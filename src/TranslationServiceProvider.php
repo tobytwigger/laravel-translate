@@ -31,27 +31,24 @@ class TranslationServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->publishAssets();
+        // TODO Tidy
 
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/laravel-translate.php', 'laravel-translate'
-        );
-
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->app->when(BodyDetectionStrategy::class)
             ->needs('$requestKey')
             ->give(function($app) {
-                return $app['config']['laravel-translate.detection_body_key'];
+                return $app['config']['laravel-translate.detection.body_key'];
             });
         $this->app->when(CookieDetectionStrategy::class)
             ->needs('$cookieKey')
             ->give(function($app) {
-                return $app['config']['laravel-translate.detection_cookie_key'];
+                return $app['config']['laravel-translate.detection.cookie_key'];
             });
         $this->app->when(HeaderDetectionStrategy::class)
             ->needs('$allowedLanguages')
             ->give(function($app) {
-                return $app['config']['laravel-translate.detection_header_allowed_languages'];
+                return $app['config']['laravel-translate.detection.header.allowed_languages'];
             });
 
         ($this->app->make(DetectionStrategyStore::class))->registerFirst(BodyDetectionStrategy::class);
@@ -74,6 +71,16 @@ class TranslationServiceProvider extends ServiceProvider
             return new NullTranslator($config);
         });
 
+    }
+
+    private function publishAssets()
+    {
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/laravel-translate.php', 'laravel-translate'
+        );
+
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
 }

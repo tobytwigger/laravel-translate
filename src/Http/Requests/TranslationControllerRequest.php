@@ -3,10 +3,12 @@
 namespace Twigger\Translate\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 use Twigger\Translate\Detect;
 use Twigger\Translate\Http\Rules\IsoLanguageCode;
 
+/**
+ * The request for the translation API
+ */
 class TranslationControllerRequest extends FormRequest
 {
 
@@ -44,6 +46,7 @@ class TranslationControllerRequest extends FormRequest
      * Prepare the data for validation.
      *
      * Add the target language to the request
+     * Add the source language to the request
      *
      * @return void
      */
@@ -65,6 +68,9 @@ class TranslationControllerRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function messages()
     {
         return [
@@ -79,6 +85,9 @@ class TranslationControllerRequest extends FormRequest
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function attributes()
     {
         return [

@@ -5,41 +5,49 @@ namespace Twigger\Translate\Http\Controllers;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Response;
 use Twigger\Translate\Http\Requests\TranslationControllerRequest;
-use Twigger\Translate\Locale\Detect;
-use Twigger\Translate\Translate;
-use Illuminate\Http\Request;
 use Twigger\Translate\Translate\TranslationManager;
 
+/**
+ * An API for using the translator
+ */
 class TranslationController
 {
+
     /**
+     * Holds the translation service
+     *
      * @var TranslationManager
      */
     private $translationManager;
-    /**
-     * @var Repository
-     */
-    private $config;
 
     /**
-     * TranslationController constructor.
      * @param TranslationManager $translationManager
-     * @param Repository $config
      */
-    public function __construct(TranslationManager $translationManager, Repository $config)
+    public function __construct(TranslationManager $translationManager)
     {
         $this->translationManager = $translationManager;
-        $this->config = $config;
     }
 
+    /**
+     * Translate the given string(s)
+     *
+     * @param TranslationControllerRequest $request
+     * @return Response
+     */
     public function translate(TranslationControllerRequest $request)
     {
-
         $response = $this->handleTranslation($request);
 
         return new Response($response, 200);
     }
 
+    /**
+     * Handle the translation
+     *
+     * @param TranslationControllerRequest $request
+     * @return array
+     * @throws \Exception
+     */
     private function handleTranslation(TranslationControllerRequest $request)
     {
         $response = [];

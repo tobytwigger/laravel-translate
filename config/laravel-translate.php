@@ -3,8 +3,22 @@
 use Twigger\Translate\Translate\TranslationManager;
 
 return [
+    /*
+     * The default driver to use
+     *
+     * Possible options may include
+     * - null: Don't translate any text automatically
+     * - aws: Use the AWS Translate service
+     */
     'default' => 'null',
 
+    /*
+     * Possible configurations
+     *
+     * Each configuration must have a unique name. They must specify a driver using the notation
+     * ```[TranslationManager::DRIVER_KEY => 'null]'```
+     * and any configuration for the driver should be added to the array too.
+     */
     'configurations' => [
         'null' => [
             TranslationManager::DRIVER_KEY => 'null'
@@ -18,16 +32,48 @@ return [
         ]
     ],
 
+    /*
+     * The table to save translations in
+     */
     'table' => 'translations',
 
-    'detection_body_key' => 'language',
-    'detection_cookie_key' => 'language',
+    /**
+     * Configuration for the Detect functionality
+     */
+    'detection' => [
+        /*
+         * The key in the request holding the target language
+         */
+        'body_key' => 'language',
 
-    'detection_header_allowed_languages' => [
-        'en',
-        'en_GB',
-        'fr'
+        /*
+         * The key of the cookie holding the target language
+         */
+        'cookie_key' => 'language',
+
+        /*
+         * Config for detecting the target language using the header
+         */
+        'header' => [
+
+            /*
+             * ISO-639-1 language codes that are allowed
+             */
+            'allowed_languages' => [
+                'en',
+                'en_GB',
+                'fr'
+            ]
+        ]
     ],
+
+    /*
+     * The URL at which the translation API is found
+     */
     'translate_api_url' => '_translate',
+
+    /*
+     * The default source language of the content
+     */
     'default_language' => 'en_US'
 ];

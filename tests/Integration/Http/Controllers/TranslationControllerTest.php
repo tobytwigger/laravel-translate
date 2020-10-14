@@ -39,7 +39,7 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.detection_body_key', 'some_random_key');
+        config()->set('laravel-translate.detection.body_key', 'some_random_key');
 
         $response = $this->postJson('_translate', [
             'line' => 'Test Line 1',
@@ -106,7 +106,7 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.detection_body_key', 'some_random_key');
+        config()->set('laravel-translate.detection.body_key', 'some_random_key');
 
         $response = $this->postJson('_translate', [
             'lines' => ['Test Line 1', 'Test Line 2'],
