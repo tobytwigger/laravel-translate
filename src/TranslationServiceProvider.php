@@ -74,9 +74,6 @@ class TranslationServiceProvider extends ServiceProvider
             return new NullTranslator($config);
         });
 
-        Validator::extend('iso_language_code', function ($attribute, $value, $parameters, $validator) {
-            return is_string($value) && (strlen($value) === 2 || strlen($value) === 5);
-        });
     }
 
 }

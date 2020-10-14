@@ -59,7 +59,8 @@ abstract class Translator
      * @param array $lines An array of lines to translate
      * @param string $to The ISO-639-1 code for the language to translate to
      * @param string $from The ISO-639-1 code for the language to translate from
-     * @return array An array of translated lines, with the index corresponding to the index of $lines (i.e. same order)
+     * @return array An array of translated lines, with the index corresponding to the index of $lines (i.e. same order).
+     * If a translation could not be completed, the element should be null
      */
     public function translateMany(array $lines, string $to, string $from): array
     {

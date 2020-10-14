@@ -25,6 +25,7 @@ class TranslationControllerTest extends LaravelTestCase
             'target_lang' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translation' => 'Test Line 1 in ru'
         ]);
@@ -46,6 +47,7 @@ class TranslationControllerTest extends LaravelTestCase
             'some_random_key' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translation' => 'Test Line 1 in ru'
         ]);
@@ -63,9 +65,10 @@ class TranslationControllerTest extends LaravelTestCase
 
         $response = $this->postJson('_translate', [
             'line' => 'Test Line 1',
-            'some_random_key' => 'ru'
+            'target_lang' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translation' => 'Test Line 1 in ru'
         ]);
@@ -87,6 +90,7 @@ class TranslationControllerTest extends LaravelTestCase
             'target_lang' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translations' => ['Test Line 1 in ru', 'Test Line 2 in ru']
         ]);
@@ -110,6 +114,7 @@ class TranslationControllerTest extends LaravelTestCase
             'some_random_key' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translations' => ['Test Line 1 in ru', 'Test Line 2 in ru']
         ]);
@@ -129,11 +134,78 @@ class TranslationControllerTest extends LaravelTestCase
 
         $response = $this->postJson('_translate', [
             'lines' => ['Test Line 1', 'Test Line 2'],
-            'some_random_key' => 'ru'
+            'target_lang' => 'ru'
         ]);
 
+        $response->assertStatus(200);
         $response->assertJsonFragment([
             'translations' => ['Test Line 1 in ru', 'Test Line 2 in ru']
+        ]);
+    }
+
+
+    /** @test */
+    public function it_returns_the_original_single_line_if_translation_is_null(){
+        $translator = $this->prophesize(Translator::class);
+        $translator->translate('Test Line 1', 'ru', 'fr')->shouldBeCalled()->willReturn(null);
+
+        $translationFactory = $this->prophesize(TranslationManager::class);
+        $translationFactory->driver(null)->willReturn($translator->reveal());
+        $this->app->instance(TranslationManager::class, $translationFactory->reveal());
+
+        $response = $this->postJson('_translate', [
+            'line' => 'Test Line 1',
+            'source_lang' => 'fr',
+            'target_lang' => 'ru'
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'translation' => 'Test Line 1'
+        ]);
+    }
+
+    /** @test */
+    public function it_returns_the_original_multiple_lines_if_translation_is_null(){
+        $translator = $this->prophesize(Translator::class);
+        $translator->translateMany(['Test Line 1', 'Test Line 2', 'Test Line 3'], 'ru', 'fr')
+            ->shouldBeCalled()
+            ->willReturn([null, 'Test Line 2 in ru', null]);
+        $translationFactory = $this->prophesize(TranslationManager::class);
+        $translationFactory->driver(null)->willReturn($translator->reveal());
+        $this->app->instance(TranslationManager::class, $translationFactory->reveal());
+
+        $response = $this->postJson('_translate', [
+            'lines' => ['Test Line 1', 'Test Line 2', 'Test Line 3'],
+            'source_lang' => 'fr',
+            'target_lang' => 'ru'
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'translations' => ['Test Line 1', 'Test Line 2 in ru', 'Test Line 3']
+        ]);
+    }
+
+    /** @test */
+    public function it_returns_the_translations_in_order(){
+        $translator = $this->prophesize(Translator::class);
+        $translator->translateMany(['Test Line 1', 'Test Line 2', 'Test Line 3'], 'ru', 'fr')
+            ->shouldBeCalled()
+            ->willReturn([null, 'Test Line 2 in ru', null]);
+        $translationFactory = $this->prophesize(TranslationManager::class);
+        $translationFactory->driver(null)->willReturn($translator->reveal());
+        $this->app->instance(TranslationManager::class, $translationFactory->reveal());
+
+        $response = $this->postJson('_translate', [
+            'lines' => ['Test Line 1', 'Test Line 2', 'Test Line 3'],
+            'source_lang' => 'fr',
+            'target_lang' => 'ru'
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertExactJson([
+            'translations' => ['Test Line 1', 'Test Line 2 in ru', 'Test Line 3']
         ]);
     }
 

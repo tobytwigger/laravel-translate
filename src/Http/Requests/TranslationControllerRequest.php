@@ -5,6 +5,7 @@ namespace Twigger\Translate\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Twigger\Translate\Detect;
+use Twigger\Translate\Http\Rules\IsoLanguageCode;
 
 class TranslationControllerRequest extends FormRequest
 {
@@ -17,11 +18,25 @@ class TranslationControllerRequest extends FormRequest
     public function rules()
     {
         return [
-            'line' => 'required_without:lines|string',
-            'lines' => 'required_without:line|array',
+            'line' => [
+                'required_without:lines', 'string',
+                function ($attribute, $value, $fail) {
+                    if($this->has('lines')) {
+                        $fail('Only one of line or lines may be given');
+                    }
+                }
+            ],
+            'lines' => [
+                'required_without:line', 'array',
+                function ($attribute, $value, $fail) {
+                    if($this->has('line')) {
+                        $fail('Only one of line or lines may be given');
+                    }
+                }
+            ],
             'lines.*' => 'string',
-            'target_lang' => 'required|iso_language_code',
-            'source_lang' => 'sometimes|iso_language_code'
+            'target_lang' => ['required', new IsoLanguageCode],
+            'source_lang' => ['required', new IsoLanguageCode]
         ];
     }
 
@@ -35,7 +50,8 @@ class TranslationControllerRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'target_lang' => $this->input('target_lang', Detect::lang())
+            'target_lang' => $this->input('target_lang', Detect::lang()),
+            'source_lang' => $this->input('source_lang', config('laravel-translate.default_language'))
         ]);
     }
 
@@ -49,6 +65,26 @@ class TranslationControllerRequest extends FormRequest
         return true;
     }
 
+    public function messages()
+    {
+        return [
+            'line.required_without' => 'Either the line or lines key must be given',
+            'lines.required_without' => 'Either the line or lines key must be given',
+            'lines.*.string' => 'The line to translate must be a string',
 
+            'line.string' => 'A string must be given',
+            'lines.array' => 'An array must be given',
+            'target_lang.required' => 'The target language must be an ISO-639-1 language code',
+            'source_lang.required' => 'The source language must be an ISO-639-1 language code'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'target_lang' => 'target language',
+            'source_lang' => 'source language'
+        ];
+    }
 
 }
