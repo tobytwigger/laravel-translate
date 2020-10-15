@@ -12,6 +12,7 @@ use Twigger\Translate\Locale\Strategies\LaravelDetectionStrategy;
 use Twigger\Translate\Translate\Handlers\NullTranslator;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
+use Twigger\Translate\Translate\Interceptors\LaravelInterceptor;
 use Twigger\Translate\Translate\TranslationFactory;
 use Twigger\Translate\Translate\TranslationManager;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ class TranslationServiceProvider extends ServiceProvider
             ->give(function($app) {
                 return $app['config']['laravel-translate.detection.cookie_key'];
             });
+
         $this->app->when(HeaderDetectionStrategy::class)
             ->needs('$allowedLanguages')
             ->give(function($app) {
@@ -60,6 +62,7 @@ class TranslationServiceProvider extends ServiceProvider
 
         app(TranslationFactory::class)->intercept(CacheInterceptor::class);
         app(TranslationFactory::class)->intercept(DatabaseInterceptor::class);
+        app(TranslationFactory::class)->intercept(LaravelInterceptor::class);
 
         foreach($this->app['config']['laravel-translate.configurations'] as $name => $config) {
             Translate::pushConfiguration($name, $config[TranslationManager::DRIVER_KEY], $config);
