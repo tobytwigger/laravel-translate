@@ -40,8 +40,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Twigger\\Tests\\TranslationServiceProvider"
-            ]
+                "Twigger\\Translate\\TranslationServiceProvider"
+            ],
+            "aliases": {
+                "Translate": "Twigger\\Translate\\Translate"
+            }
         }
     },
     "scripts": {

@@ -194,7 +194,8 @@ TODO Using the DB to override translations. Need to do frontend.
 
 ### Package configuration
 
-- Setting up the package (service provider)
+- Detector options. Without header, cookie & body
+- 
 - Config options
 
 ### Registering a new configuration
@@ -215,7 +216,9 @@ Laravel Translate has been designed with extensibility as a priority - we make s
 
 The translator provides two interfaces - a translator and an interceptor. Although these are very similar, and in fact an interceptor is just a special form of translator, they are used for very different reasons.
 
-A translator should be able to translate almost any text. An interceptor only has certain text it able to translate, and passes onto the translator if it is not able to translate. For example, lang files are interceptors as you have to define each translation so it's likely any given text won't have a translation. Google translate is a translator, since it should be able to handle most strings. If you're unsure if you need to create an interceptor or a translator, ask yourself if it's likely the method won't be able to translate any random string. If this is the case, you want an interceptor.
+A translator should be able to translate almost any text. An interceptor only has certain text it able to translate, and passes onto the translator if it is not able to translate. For example, lang files are interceptors as you have to define each translation so it's likely any given text won't have a translation. Google translate is a translator, since it should be able to handle most strings. 
+
+If you're unsure if you need to create an interceptor or a translator, ask yourself if it's likely the method won't be able to translate any random string. If this is the case, you want an interceptor.
 
 #### Creating an Interceptor
 

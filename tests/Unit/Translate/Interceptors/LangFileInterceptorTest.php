@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Translation\Translator;
 use Twigger\Tests\Translate\TestCase;
 
-class LaravelInterceptorTest extends TestCase
+class LangFileInterceptorTest extends TestCase
 {
 
     /** @test */
@@ -22,7 +22,7 @@ class LaravelInterceptorTest extends TestCase
         $translator = $this->prophesize(\Twigger\Translate\Translate\Translator::class);
         $translator->translate('Test Line', 'fr', 'en')->shouldBeCalled()->willReturn('Some Test Line');
 
-        $interceptor = new \Twigger\Translate\Translate\Interceptors\LaravelInterceptor(
+        $interceptor = new \Twigger\Translate\Translate\Interceptors\LangFileInterceptor(
             [], $translator->reveal(), $laravelTranslate->reveal()
         );
         $this->assertEquals('Some Test Line', $interceptor->translate('Test Line', 'fr', 'en'));
@@ -41,7 +41,7 @@ class LaravelInterceptorTest extends TestCase
         $translator = $this->prophesize(\Twigger\Translate\Translate\Translator::class);
         $translator->translate('Test Line', 'fr', 'ru')->shouldNotBeCalled();
 
-        $interceptor = new \Twigger\Translate\Translate\Interceptors\LaravelInterceptor(
+        $interceptor = new \Twigger\Translate\Translate\Interceptors\LangFileInterceptor(
             [], $translator->reveal(), $laravelTranslate->reveal()
         );
         $this->assertEquals('Some Other Test Line', $interceptor->translate('Test Line', 'fr', 'ru'));;
@@ -59,7 +59,7 @@ class LaravelInterceptorTest extends TestCase
         $translator = $this->prophesize(\Twigger\Translate\Translate\Translator::class);
         $translator->translate('Test Line', 'fr', 'en')->shouldBeCalled()->willReturn('Some Test Line');
 
-        $interceptor = new \Twigger\Translate\Translate\Interceptors\LaravelInterceptor(
+        $interceptor = new \Twigger\Translate\Translate\Interceptors\LangFileInterceptor(
             [], $translator->reveal(), $laravelTranslate->reveal()
         );
         $this->assertEquals('Some Test Line', $interceptor->translate('Test Line', 'fr', 'en'));

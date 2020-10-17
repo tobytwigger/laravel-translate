@@ -9,7 +9,7 @@ use Twigger\Translate\Translate\Translator;
 /**
  * Inject Laravel translations into the translation flow.
  */
-class LaravelInterceptor extends TranslationInterceptor
+class LangFileInterceptor extends TranslationInterceptor
 {
 
     /**

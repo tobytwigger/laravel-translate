@@ -27,7 +27,7 @@ class Translate extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'portal-translation';
+        return 'laravel-translate';
     }
 
 }

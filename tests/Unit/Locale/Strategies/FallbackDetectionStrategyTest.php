@@ -6,9 +6,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Prophecy\Argument;
 use Twigger\Tests\Translate\TestCase;
-use Twigger\Translate\Locale\Strategies\LaravelDetectionStrategy;
+use Twigger\Translate\Locale\Strategies\FallbackDetectionStrategy;
 
-class LaravelDetectionStrategyTest extends TestCase
+class FallbackDetectionStrategyTest extends TestCase
 {
 
     /** @test */
@@ -16,9 +16,9 @@ class LaravelDetectionStrategyTest extends TestCase
         $app = $this->prophesize(Application::class);
         $app->getFallbackLocale()->willReturn('en_GB');
 
-        $LaravelDetectionStrategy = new LaravelDetectionStrategy($app->reveal());
+        $FallbackDetectionStrategy = new FallbackDetectionStrategy($app->reveal());
 
-        $this->assertEquals('en_GB', $LaravelDetectionStrategy->detect());
+        $this->assertEquals('en_GB', $FallbackDetectionStrategy->detect());
     }
 
 }

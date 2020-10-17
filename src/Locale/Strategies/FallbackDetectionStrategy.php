@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 /**
  * Get the language from the laravel app. This is usually set through the config.
  */
-class LaravelDetectionStrategy extends DetectionStrategy
+class FallbackDetectionStrategy extends DetectionStrategy
 {
 
     /**
