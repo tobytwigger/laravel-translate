@@ -130,6 +130,6 @@ yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 This package is copyright © [Toby Twigger](https://github.com/tobytwigger)
 and licensed for use under the terms of the MIT License (MIT). Please see
-[LICENCE](LICENCE.md) for more information.
+[LICENCE.md](LICENCE.md) for more information.
 
 ## Contact
