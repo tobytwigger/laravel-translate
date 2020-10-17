@@ -38,7 +38,7 @@ Laravel Translate provides instant free translations using Google, AWS, Bing or 
 All you need to do to use this project is pull it into an existing Laravel app using composer.
 
 ```shell script
-composer require tobytwigger/laravel-translate
+composer require twigger/laravel-translate
 ```
 
 You can publish the configuration file by running 
@@ -80,7 +80,7 @@ The strategies used to detect the requested locale can be modified, which is des
 
 #### Source Language
 
-The source language is required, as many websites may have content written in multiple languages. If this is not the case, we recommend passing in the default Laravel locale.
+The source language is required, as many websites may have content written in multiple languages. If this is not the case, we recommend passing in the Laravel locale as a sensible default.
 
 ```php
 \Twigger\Translate\Translate::translate('A string to translate', 'fr', \Illuminate\Support\Facades\App::getLocale());
@@ -90,7 +90,85 @@ You may then edit the ```locale``` key in your ```config/app.php``` file to defi
 
 ### Using the API
 
-The Laravel Translate package provides an API for translating any text. The endpoint is defined in the configuration file, but defaults to ```_translate```.
+The Laravel Translate package provides an API for translating any text. The endpoint is defined in the configuration file, but defaults to ```_translate```. The source and target language are automatically detected as described above.
+
+#### Translating single lines
+
+##### Request
+
+```http request
+POST /_translate HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+{
+    "line": "A line to translate"
+}
+```
+
+##### Response
+
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+   "translation": "The translated line in the detected language"
+}
+```
+
+#### Translating multiple lines
+
+##### Request
+
+```http request
+POST /_translate HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+{
+    "lines": [
+        "A line to translate",
+        "Another line to translate",
+    ]
+}
+```
+
+##### Response
+
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+   "translations": [
+        "The translated line in the detected language",
+        "The second translated line in the detected language",
+    ]
+}
+```
+
+#### Overriding the source and target language
+
+This will translate the line from english to french. Although ```target_lang``` and ```source_lang``` are not required, either or both may be given to override the default behaviour of the API.
+##### Request
+
+```http request
+POST /_translate HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+{
+    "line": "A line to translate",
+    "target_lang": "fr",
+    "source_lang": "en"
+}
+```
+
+##### Response
+
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+   "translation": "The translated line in the detected language"
+}
+```
 
 TODO Document more
 
