@@ -170,34 +170,43 @@ Content-Type: application/json
 }
 ```
 
-TODO Document more
-
 ### Using the js translator
 
-TODO JS translator with debouncing
+Currently under development.
+
+Using our javascript tool, you can easily translate any text from Vue, React or just plain javascript. It helps maintain a balance between time taken to translate text and the number of API calls, by collecting translation requests and translating many in one.
 
 ### Using Blade
 
-TODO Blade directive
+Currently under development
+
+If you use the blade templating engine to define your frontend, you can make use of our blade directive to quickly translate any text.
 
 ### Using the helper function
 
-TODO Helper function
+Rather than relying on the facade, you can easily use our helper function which uses the facade in the background.
 
 ### Overriding translations
 
-TODO Using the DB to override translations
+TODO Using the DB to override translations. Need to do frontend.
 
 ## Configuration
 
+### Package configuration
+
 - Setting up the package (service provider)
-- Config options. Also defining more config directly
+- Config options
+
+### Registering a new configuration
+
+- Config options defined in config.
+- Defining more config directly through manager
 
 ## Extending
 
-- Writing a handler
-- Writing an interceptor
 - What's the difference? THe buck stops with the handler - should be able to translate anything.
+- Writing & registering a handler.
+- Writing & registering an interceptor.
 
 ## Contributing
 
@@ -211,3 +220,5 @@ and licensed for use under the terms of the MIT License (MIT). Please see
 [LICENCE.md](LICENCE.md) for more information.
 
 ## Contact
+
+For any questions, suggestions, security vulnerabilities or help, email me directly at [tobytwigger1@gmail.com](mailto:tobytwigger1@gmail.com)
