@@ -2,6 +2,7 @@
 
 namespace Twigger\Translate\Translate\Interceptors;
 
+use Illuminate\Support\Facades\App;
 use Twigger\Translate\Translate\TranslationInterceptor;
 use Twigger\Translate\Translate\Translator;
 
@@ -34,8 +35,7 @@ class LaravelInterceptor extends TranslationInterceptor
      */
     protected function canIntercept(string $line, string $to, string $from): bool
     {
-        // TODO Check from language is alright
-        return $this->laravelTranslator->has($line, [], $to);
+        return App::isLocale($from) ? $this->laravelTranslator->has($line, [], $to) : false;
     }
 
     /**

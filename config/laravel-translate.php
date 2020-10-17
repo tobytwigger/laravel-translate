@@ -70,10 +70,6 @@ return [
     /*
      * The URL at which the translation API is found
      */
-    'translate_api_url' => '_translate',
+    'translate_api_url' => '_translate'
 
-    /*
-     * The default source language of the content
-     */
-    'default_language' => 'en_US'
 ];

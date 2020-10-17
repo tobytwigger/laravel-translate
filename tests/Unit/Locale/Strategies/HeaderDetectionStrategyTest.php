@@ -1,6 +1,6 @@
 <?php
 
-namespace Twigger\Tests\Unit\Translate\Locale\Strategies;
+namespace Twigger\Tests\Translate\Unit\Locale\Strategies;
 
 use Illuminate\Http\Request;
 use Twigger\Tests\Translate\TestCase;

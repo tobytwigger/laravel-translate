@@ -61,7 +61,7 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.default_language', 'fr');
+        config()->set('app.locale', 'fr');
 
         $response = $this->postJson('_translate', [
             'line' => 'Test Line 1',
@@ -130,7 +130,7 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.default_language', 'fr');
+        config()->set('app.locale', 'fr');
 
         $response = $this->postJson('_translate', [
             'lines' => ['Test Line 1', 'Test Line 2'],

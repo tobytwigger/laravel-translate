@@ -54,7 +54,7 @@ class TranslationControllerRequest extends FormRequest
     {
         $this->merge([
             'target_lang' => $this->input('target_lang', Detect::lang()),
-            'source_lang' => $this->input('source_lang', config('laravel-translate.default_language'))
+            'source_lang' => $this->input('source_lang', config('app.locale'))
         ]);
     }
 

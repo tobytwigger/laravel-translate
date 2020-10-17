@@ -36,6 +36,6 @@ class LaravelDetectionStrategy extends DetectionStrategy
      */
     protected function getCurrentLocale(): ?string
     {
-        return $this->application->getLocale();
+        return $this->application->getFallbackLocale();
     }
 }

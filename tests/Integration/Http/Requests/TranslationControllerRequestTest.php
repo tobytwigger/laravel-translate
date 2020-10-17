@@ -28,7 +28,7 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.default_language', 'ru');
+        config()->set('app.locale', 'ru');
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class TranslationControllerRequestTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        config()->set('laravel-translate.default_language', 'ru');
+        config()->set('app.locale', 'ru');
 
         $response = $this->postJson('_translate', [
             'line' => 'Line1',
