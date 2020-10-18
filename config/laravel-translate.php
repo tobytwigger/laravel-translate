@@ -59,11 +59,7 @@ return [
             /*
              * ISO-639-1 language codes that are allowed
              */
-            'allowed_languages' => [
-                'en',
-                'en_GB',
-                'fr'
-            ]
+            'allowed_languages' => []
         ]
     ],
 
