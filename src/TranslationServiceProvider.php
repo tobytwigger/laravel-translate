@@ -16,6 +16,7 @@ use Twigger\Translate\Translate\Handlers\NullTranslator;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
 use Twigger\Translate\Translate\Interceptors\LangFileInterceptor;
+use Twigger\Translate\Translate\Interceptors\SameLanguageInterceptor;
 use Twigger\Translate\Translate\TranslationFactory;
 use Twigger\Translate\Translate\TranslationManager;
 use Illuminate\Support\Facades\Route;
@@ -172,7 +173,7 @@ class TranslationServiceProvider extends ServiceProvider
         $this->parseConfig();
         $this->defineBladeDirectives();
 
-        Route::post(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])->name('translator.translate');
+        Route::middleware('cache.headers:public;max_age=31540000;etag')->post(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])->name('translator.translate');
 
     }
 
@@ -247,6 +248,8 @@ class TranslationServiceProvider extends ServiceProvider
     private function setupInterceptors()
     {
         $translationFactory = app(TranslationFactory::class);
+
+        $translationFactory->intercept(SameLanguageInterceptor::class);
 
         if(static::$withCacheInterceptor) {
             $translationFactory->intercept(CacheInterceptor::class);
