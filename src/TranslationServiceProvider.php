@@ -271,7 +271,6 @@ class TranslationServiceProvider extends ServiceProvider
             Translate::pushConfiguration($name, $config[TranslationManager::DRIVER_KEY], $config);
         }
 
-        // TODO null here refers to a config, not a driver. Make default null config.
         Translate::setDefaultDriver($this->app->make(Config::class)->get('laravel-translate.default', 'null'));
     }
 

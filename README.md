@@ -184,7 +184,26 @@ If you use the blade templating engine to define your frontend, you can make use
 
 ### Using the helper function
 
-Rather than relying on the facade, you can easily use our helper function which uses the facade in the background.
+Rather than relying on the facade, you can easily use our helper function which uses the facade in the background. This takes the same arguments as the facade.
+
+```php
+// Translate from English to French
+laravelTranslate('Line to Translate', 'fr', 'en');
+```
+
+The target and source language will be automatically detected if left blank, meaning you can just pass the string in
+
+```php
+laravelTranslate('Line to Translate');
+```
+
+If no arguments are given, an instance of the Translation Manager will be given.
+
+This function is also accessible through ```__t```, which is shorter and cleaner to use.
+
+```php
+$frenchString = __t('Welcome'); // Bienvenue
+```
 
 ### Overriding translations
 
