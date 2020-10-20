@@ -43,7 +43,7 @@ composer require twigger/laravel-translate
 
 You can publish the configuration file by running 
 ```shell script
-php artisan vendor:publish --provider=\Twigger\Translate\TranslationServiceProvider
+php artisan vendor:publish --provider="Twigger\Translate\TranslationServiceProvider"
 ```
 
 ## Basic Usage
@@ -178,9 +178,23 @@ Using our javascript tool, you can easily translate any text from Vue, React or 
 
 ### Using Blade
 
-Currently under development
-
 If you use the blade templating engine to define your frontend, you can make use of our blade directive to quickly translate any text.
+
+```blade
+@trans('Welcome', 'fr', 'en')
+```
+
+The target and source language will be automatically detected if left blank, meaning you can just pass the string in
+
+```blade
+@trans('Welcome') 
+```
+
+This directive is also accessible through ```__t```, which is shorter and cleaner to use.
+
+```blade
+@__t('Welcome')
+```
 
 ### Using the helper function
 

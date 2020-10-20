@@ -3,6 +3,7 @@
 namespace Twigger\Translate;
 
 use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Twigger\Translate\Http\Controllers\TranslationController;
 use Twigger\Translate\Locale\Strategies\BodyDetectionStrategy;
@@ -19,6 +20,7 @@ use Twigger\Translate\Translate\TranslationFactory;
 use Twigger\Translate\Translate\TranslationManager;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Twigger\Translate\Translate\Translator;
 
 /**
  * The service provider for loading Laravel Translate
@@ -64,6 +66,11 @@ class TranslationServiceProvider extends ServiceProvider
      */
     protected static $withDatabaseInterceptor = true;
 
+    /**
+     * If false, the language files won't be looked at
+     *
+     * @var bool Should the language files be used
+     */
     protected static $withLangFileInterceptor = true;
 
     /**
@@ -163,6 +170,7 @@ class TranslationServiceProvider extends ServiceProvider
         $this->setupInterceptors();
         $this->loadDrivers();
         $this->parseConfig();
+        $this->defineBladeDirectives();
 
         Route::post(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])->name('translator.translate');
 
@@ -177,6 +185,14 @@ class TranslationServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../config/laravel-translate.php', 'laravel-translate'
         );
+
+        $this->publishes([
+            __DIR__ . '/../config/laravel-translate.php' => config_path('laravel-translate.php'),
+        ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => database_path('migrations')
+        ], 'migrations');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
@@ -272,6 +288,18 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         Translate::setDefaultDriver($this->app->make(Config::class)->get('laravel-translate.default', 'null'));
+    }
+
+    private function defineBladeDirectives()
+    {
+        Blade::directive('trans', function ($expression) {
+            return "<?php echo __t($expression); ?>";
+        });
+//
+        Blade::directive('__t', function ($expression) {
+            return "<?php echo {__t($expression)}; ?>";
+        });
+
     }
 
 }
