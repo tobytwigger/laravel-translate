@@ -14,7 +14,7 @@ class helpersTest extends LaravelTestCase
     /** @test */
     public function laravelTranslate_returns_an_instance_of_the_translation_manager()
     {
-        $translationManager = laravelTranslate();
+        $translationManager = \laravelTranslate();
         $this->assertInstanceOf(TranslationManager::class, $translationManager);
     }
 
@@ -25,7 +25,7 @@ class helpersTest extends LaravelTestCase
         $translator->translate('Line 1', 'fr', 'en')->shouldBeCalled()->willReturn('Line 1 translated');
         $this->app->instance('laravel-translate', $translator->reveal());
 
-        $this->assertEquals('Line 1 translated', laravelTranslate('Line 1', 'fr', 'en'));
+        $this->assertEquals('Line 1 translated', \laravelTranslate('Line 1', 'fr', 'en'));
     }
 
     /** @test */
@@ -41,13 +41,13 @@ class helpersTest extends LaravelTestCase
         $translator->translate('Line 1', 'ru', 'de')->shouldBeCalled()->willReturn('Line 1 translated');
         $this->app->instance('laravel-translate', $translator->reveal());
 
-        $this->assertEquals('Line 1 translated', laravelTranslate('Line 1'));
+        $this->assertEquals('Line 1 translated', \laravelTranslate('Line 1'));
     }
 
     /** @test */
     public function __t_returns_an_instance_of_the_translation_manager()
     {
-        $translationManager = __t();
+        $translationManager = \__t();
         $this->assertInstanceOf(TranslationManager::class, $translationManager);
     }
 
@@ -58,7 +58,7 @@ class helpersTest extends LaravelTestCase
         $translator->translate('Line 1', 'fr', 'en')->shouldBeCalled()->willReturn('Line 1 translated');
         $this->app->instance('laravel-translate', $translator->reveal());
 
-        $this->assertEquals('Line 1 translated', __t('Line 1', 'fr', 'en'));
+        $this->assertEquals('Line 1 translated', \__t('Line 1', 'fr', 'en'));
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class helpersTest extends LaravelTestCase
         $translator->translate('Line 1', 'ru', 'de')->shouldBeCalled()->willReturn('Line 1 translated');
         $this->app->instance('laravel-translate', $translator->reveal());
 
-        $this->assertEquals('Line 1 translated', __t('Line 1'));
+        $this->assertEquals('Line 1 translated', \__t('Line 1'));
     }
 
 }
