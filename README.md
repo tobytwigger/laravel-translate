@@ -17,6 +17,7 @@
 * [About the Project](#about)
 * [Documentation](#docs)
 * [Contributing](#contributing)
+* [Roadmap](#roadmap)
 * [Copyright and Licence](#copyright-and-licence)
 * [Contact](#contact)
 
@@ -40,6 +41,18 @@ We've taken care over documenting everything you'll need to get started and use 
 
 Contributions are welcome! Before contributing to this project, familiarize
 yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Roadmap
+
+The following list is a non-comprehensive collection of features which will be implemented in the next few weeks/months.
+
+- [ ] Documentation needs reviewing.
+- [ ] DB model should clear the translation cache when updated using an observer. This means that any db changes will be instantly reflected through the cache.
+- [ ] DB frontend needs to be made using Vuetify to allow translations to be created/updated.
+- [ ] A JS tool needs to be written to allow use of the provided translate API. It should limit the number of requests by grouping translation requests and sending them in one.
+- [ ] The DB interceptor needs to be optimised in terms of database calls.
+- [ ] More implementations for translation services are needed.
+- [ ] A 'free' translation service should be made, which uses AWS free tier, google translate directly and any other free-per-month service.
 
 ## Copyright and Licence
 
