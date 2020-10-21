@@ -1,4 +1,4 @@
-<h1 align="center">Laravel Translations</h1>
+<h1 align="center">Laravel Translate</h1>
 
 <p align="center">
     <strong>Supercharged instant translations for any Laravel project.</strong>
@@ -32,7 +32,9 @@ Laravel Translate provides instant free translations using Google, AWS, Bing or 
 
 ## Docs
 
-[See the docs.](https://tobytwigger.github.io/laravel-translate)
+We've taken care over documenting everything you'll need to get started and use Laravel Translate fully.
+
+[Check out the docs](https://tobytwigger.github.io/laravel-translate) on our documentation site.
 
 ## Contributing
 
