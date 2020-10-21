@@ -16,9 +16,6 @@
 
 * [About the Project](#about)
 * [Documentation](#docs)
-* [Basic Usage](#basic-usage)
-* [Configuration](#configuration)
-* [Extending](#extending)
 * [Contributing](#contributing)
 * [Copyright and Licence](#copyright-and-licence)
 * [Contact](#contact)
