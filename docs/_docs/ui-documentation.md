@@ -20,4 +20,6 @@ nav_order: 3
 
 ## Introduction
 
-TODO Using the DB to override translations. Need to do frontend.
+This is a work in progress
+
+Frontend page to manage and update translations in the database, allowing for customising individual translations.
