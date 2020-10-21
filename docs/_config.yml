@@ -86,7 +86,7 @@ color_scheme: dark
 collections:
     # Define a collection named "docs", its documents reside in the "_docs" directory
     docs:
-        permalink: "/:collection/:path/"
+        permalink: ":path"
         output: true
 
 just_the_docs:
@@ -106,7 +106,3 @@ just_the_docs:
 
 # Build settings
 theme: "just-the-docs"
-
-remote_theme: pmarsceill/just-the-docs
-
-
