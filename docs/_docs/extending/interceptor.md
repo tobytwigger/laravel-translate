@@ -6,7 +6,7 @@ parent: Extending
 ---
 
 
-# Navigation Structure
+# Extending
 {: .no_toc }
 
 <details open markdown="block">

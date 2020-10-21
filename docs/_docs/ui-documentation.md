@@ -4,7 +4,7 @@ title: UI Documentation
 nav_order: 3
 ---
 
-# Navigation Structure
+# UI Documentation
 {: .no_toc }
 
 <details open markdown="block">

@@ -6,7 +6,7 @@ parent: Configuration
 ---
 
 
-# Navigation Structure
+# Configuration
 {: .no_toc }
 
 <details open markdown="block">
@@ -23,7 +23,7 @@ parent: Configuration
 
 ## Registering a new configuration
 
-Laravel Translate comes with a few translation drivers you can use, and you can add your own ([docs](#extending-the-translator)). You may use the drivers with your own configuration. For example, the AWS driver needs a secret key and id to authenticate, whereas the null driver needs nothing.
+Laravel Translate comes with a few translation drivers you can use, and you can [add your own]({{ site.baseurl }}{% link _docs/extending/translator.md %}). You may use the drivers with your own configuration. For example, the AWS driver needs a secret key and id to authenticate, whereas the null driver needs nothing.
 
 The grouping of a driver with its settings is called a configuration, and is what you'll mainly use to interact with Laravel Translate. By default, we've defined a configuration per driver, but you're very welcome to add any number of new configurations.
 

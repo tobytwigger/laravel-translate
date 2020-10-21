@@ -6,7 +6,7 @@ parent: Configuration
 ---
 
 
-# Navigation Structure
+# Configuration
 {: .no_toc }
 
 <details open markdown="block">
@@ -23,7 +23,7 @@ parent: Configuration
 
 ## Configuration File
 
-This can be published using ```php artisan vendor:publish``` so you can customise the package. The options available are documented here, but translator drivers are documented in [Registering a new configuration](#registering-a-new-configuration).
+This can be published using ```php artisan vendor:publish``` so you can customise the package. The options available are documented here, but translator drivers are documented in the [driver configuration]({{ site.baseurl }}{% link _docs/configuration/driver-configuration.md %}#registering-a-new-configuration) docs.
 
 ### Table
 

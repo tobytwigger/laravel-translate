@@ -1,0 +1,54 @@
+<button type="button" class="btn btn-purple js-toggle-dark-mode">Come to the dark side</button>
+
+<script>
+    const toggleDarkMode = document.querySelector('.js-toggle-dark-mode');
+
+    jtd.addEvent(toggleDarkMode, 'click', function(){
+        if (jtd.getTheme() === 'dark') {
+            jtd.setTheme('light');
+            setCookie('theme', 'light', 365);
+            toggleDarkMode.textContent = 'Come to the dark side';
+        } else {
+            jtd.setTheme('dark');
+            setCookie('theme', 'dark', 365);
+            toggleDarkMode.textContent = 'Return to the light side';
+        }
+    });
+
+    jtd.onReady(function() {
+        if(getCookie('theme') === 'dark') {
+            jtd.setTheme('dark');
+            toggleDarkMode.textContent = 'Return to the light side';
+        } else {
+            jtd.setTheme('light');
+            toggleDarkMode.textContent = 'Come to the dark side';
+        }
+    });
+
+    function setCookie(cname, cvalue, exdays) {
+        let d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>
+
+{%- if site.footer_content -%}
+<p class="text-small text-grey-dk-100 mb-0">{{ site.footer_content }}</p>
+{%- endif -%}

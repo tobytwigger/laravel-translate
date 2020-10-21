@@ -6,7 +6,7 @@ has_children: true
 ---
 
 
-# Navigation Structure
+# Extending
 {: .no_toc }
 
 <details open markdown="block">
@@ -26,13 +26,15 @@ Laravel Translate has been designed with extensibility as a priority - we make s
 
 ## Extending the Detector
 
-TODO
- - Why would you want to
- - Link to docs
+The detector has several methods for detecting the target language. For example, it checks in the request to see if a language has been given. If not, it'll check to see if a cookie exists that contains the language. Failing that, it'll use the browser preferences.
+
+Laravel Translate allows you to add your own methods. For example, maybe a user specifies their default language which is saved in the database. Or maybe it's in the url of the website (such as www.example.com/fr).
+
+No matter what, you can [create your own method]({{ site.baseurl }}{% link _docs/extending/detector.md %}) for detecting the target language.
 
 ## Extending the Translator
 
-The translator provides two interfaces - a translator and an interceptor. Although these are very similar, and in fact an interceptor is just a special form of translator, they are used for very different reasons.
+The translator provides two interfaces - a [translator]({{ site.baseurl }}{% link _docs/extending/translator.md %}) and an [interceptor]({{ site.baseurl }}{% link _docs/extending/interceptor.md %}). Although these are very similar, and in fact an interceptor is just a special form of translator, they are used for very different reasons.
 
 A translator should be able to translate almost any text. An interceptor only has certain text it is able to translate, and defaults to the translator if the interceptor is not able to translate the text. For example, lang files are interceptors as you have to define each translation so it's likely any given text won't have a translation. Google translate is a translator, since it should be able to handle most strings without first needing to define them. 
 

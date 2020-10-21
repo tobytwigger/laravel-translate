@@ -4,7 +4,7 @@ title: Basic Usage
 nav_order: 2
 ---
 
-# Navigation Structure
+# Basic Usage
 {: .no_toc }
 
 <details open markdown="block">
@@ -48,7 +48,7 @@ To simplify the detection of this language, the Laravel Translate package provid
 $targetLocale = \Twigger\Translate\Detect::lang();
 ```
 
-The strategies used to detect the requested locale can be modified, which is described further in the [configuration](#configuration) section.
+The strategies used to detect the requested locale can be modified, which is described further in the [configuration option]({{ site.baseurl }}{% link _docs/configuration/package-configuration.md %}#detection) section.
 
 ### Source Language
 
@@ -70,7 +70,7 @@ The Laravel Translate package provides an API for translating any text. The endp
 
 #### Request
 
-```http request
+```http
 POST /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -81,7 +81,7 @@ Content-Type: application/json
 
 #### Response
 
-```http request
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
@@ -93,7 +93,7 @@ Content-Type: application/json
 
 #### Request
 
-```http request
+```http
 POST /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -107,7 +107,7 @@ Content-Type: application/json
 
 #### Response
 
-```http request
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
@@ -123,7 +123,7 @@ Content-Type: application/json
 This will translate the line from english to french. Although ```target_lang``` and ```source_lang``` are not required, either or both may be given to override the default behaviour of the API.
 #### Request
 
-```http request
+```http
 POST /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -136,7 +136,7 @@ Content-Type: application/json
 
 #### Response
 
-```http request
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
@@ -160,14 +160,9 @@ Using our javascript tool, you can easily translate any text from Vue, React or 
 If you use the blade templating engine to define your frontend, you can make use of our blade directive to quickly translate any text.
 
 ```blade
-@trans('Welcome', 'fr', 'en')
-```
-
-The target and source language will be automatically detected if left blank, meaning you can just pass the string in
-
-```blade
 @trans('Welcome') 
 ```
+The target and source language will be automatically detected, using the default source language from the config and the target language using the detector,
 
 This directive is also accessible through ```__t```, which is shorter and cleaner to use.
 

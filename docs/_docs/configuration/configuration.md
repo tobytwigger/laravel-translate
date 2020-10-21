@@ -6,7 +6,7 @@ has_children: true
 ---
 
 
-# Navigation Structure
+# Configuration
 {: .no_toc }
 
 <details open markdown="block">
