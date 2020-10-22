@@ -8,10 +8,10 @@
     <a href="https://github.com/tobytwigger/laravel-translate/releases">
         <img src="https://img.shields.io/github/v/release/tobytwigger/laravel-translate?label=Latest%20Version&sort=semver&style=plastic" alt="Latest Version">
     </a>
-    <a href="https://github.com/tobytwigger/laravel-translate/blob/master">
+    <a href="https://github.com/tobytwigger/laravel-translate/tree/master">
         <img src="https://img.shields.io/github/workflow/status/tobytwigger/laravel-translate/build-status/master?label=release%20status&style=plastic" alt="Master branch status">
     </a>
-    <a href="https://github.com/tobytwigger/laravel-translate/blob/develop">
+    <a href="https://github.com/tobytwigger/laravel-translate/tree/develop">
         <img src="https://img.shields.io/github/workflow/status/tobytwigger/laravel-translate/build-status/develop?label=dev%20status&style=plastic" alt="Develop branch status">
     </a>
 </p>
