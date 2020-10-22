@@ -17,7 +17,6 @@
 </p>
 
 <p align="center">
-
     <a href="http://buymeacoffee.com/translate">
         <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee">
     </a>
