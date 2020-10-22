@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+
+## [0.1] - (09/09/2020)
+
+> This is a pre-release. It is still under construction, although it is mostly in a final state.
+
 ### Added
-- Initial Commit
+- Initial release
 
-
-[Unreleased]: https://github.com/tobytwigger/laravel-translate
+[Unreleased]: https://github.com/tobytwigger/laravel-translate/compare/v0.1...HEAD
+[0.1]: https://github.com/bristol-su/support/releases/tag/v0.1
