@@ -2,55 +2,84 @@
 
 namespace Twigger\Translate\Translate;
 
-use Twigger\Translate\Translate\Handlers\AWSTranslator;
-use Twigger\Translate\Translate\Handlers\Cache;
-use Twigger\Translate\Translate\Handlers\Chain;
-use Twigger\Translate\Translate\Handlers\Database;
 use Closure;
-use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
- * @method static string translate(string $line, string $lang) Translate a single line
- * @method static string translateMany(array $line, string $lang) Translate an array of lines
+ * Handles creating translation services
+ *
+ * @method static string translate(string $line, string $to, string $from) Translate a single line
+ * @method static string translateMany(array $line, string $to, string $from) Translate an array of lines
+ *
+ * @see Translator
  */
 class TranslationManager
 {
 
     /**
-     * The container instance.
+     * Define the key in the configuration that will represent the driver
+     */
+    const DRIVER_KEY = '__translator_driver_registration_name';
+
+    /**
+     * The container instance to pass to a driver callback function
      *
      * @var Container
      */
     protected $container;
 
     /**
-     * The registered custom driver creators.
+     * The registered driver creators.
      *
      * @var array
      */
     protected $customCreators = [];
 
     /**
+     * The registered configurations.
+     *
+     * The key is the name of the configuration, and the value is an array of configuration values.
+     *
+     * @var array
+     */
+    protected $configuration = [];
+
+    /**
+     * Holds the default configuration to use
+     *
+     * @var string
+     */
+    protected $defaultDriver;
+
+    /**
+     * Holds the translation factory to create a translation
+     *
+     * @var TranslationFactory
+     */
+    private $translationFactory;
+
+    /**
      * Create a new Translation manager instance.
      *
-     * @param  Container  $container
-     * @return void
+     * @param Container $container
+     * @param TranslationFactory $translationFactory Used for setting up a translation
      */
-    public function __construct(Container $container)
+    public function __construct(Container $container, TranslationFactory $translationFactory)
     {
         $this->container = $container;
+        $this->translationFactory = $translationFactory;
     }
 
     /**
      * Get a translation driver instance.
      *
-     * @param  string|null  $driver
-     * @return mixed
+     * @param string|null $driver The name of the configuration to use
+     * @return Translator
+     *
+     * @throws \Exception
      */
-    public function driver($driver = null)
+    public function driver($driver = null): Translator
     {
         return $this->resolve($driver ?? $this->getDefaultDriver());
     }
@@ -58,97 +87,112 @@ class TranslationManager
     /**
      * Resolve the given translation instance by name.
      *
-     * @param  string  $name
+     * @param string $name The name of the configuration to use
      * @return Translator
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws \Exception
      */
-    protected function resolve($name)
+    protected function resolve(string $name): Translator
     {
         $config = $this->configurationFor($name);
 
-        if (is_null($config)) {
-            throw new InvalidArgumentException("Translator [{$name}] is not defined.");
+        if(!array_key_exists(static::DRIVER_KEY, $config) || !$config[static::DRIVER_KEY]) {
+            throw new \Exception(sprintf('Translation configuration does not supply a driver'));
         }
-        if (isset($this->customCreators[$config['driver']])) {
-            return $this->createTranslator($this->callCustomCreator($config));
-        }
-
-        $driverMethod = 'create'.Str::studly($config['driver']).'Driver';
-
-        if (method_exists($this, $driverMethod)) {
-            return $this->createTranslator($this->{$driverMethod}($config));
+        if (isset($this->customCreators[$config[static::DRIVER_KEY]])) {
+            return $this->translationFactory->create($this->callCustomCreator($config));
         }
 
-        throw new InvalidArgumentException("Driver [{$config['driver']}] is not supported.");
+        throw new InvalidArgumentException("Driver [{$config[static::DRIVER_KEY]}] is not supported.");
     }
 
     /**
      * Call a custom driver creator.
      *
-     * @param  array  $config
-     * @return mixed
+     * @param  array  $config The configuration to create the driver from
+     * @return Translator
      */
-    protected function callCustomCreator(array $config)
+    protected function callCustomCreator(array $config): Translator
     {
-        return $this->customCreators[$config['driver']]($this->container, $config);
+        return $this->customCreators[$config[static::DRIVER_KEY]]($this->container, $config);
     }
 
     /**
-     * Get the translation connection configuration.
+     * Get the requested configuration
      *
      * @param  string  $name
      * @return array
      */
-    protected function configurationFor($name)
+    protected function configurationFor(string $name): array
     {
-        $config = $this->container['config']["support.translators.{$name}"];
-        if(is_null($config)) {
-            return null;
+        if(array_key_exists($name, $this->configuration)) {
+            return $this->configuration[$name];
         }
-        return $config;
+
+        throw new InvalidArgumentException("Translator [{$name}] is not defined.");
+
     }
 
     /**
      * Get the default translation driver name.
      *
-     * @return string
+     * @return string The default translation configuration name
+     * @throws \Exception If no default translator set
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
-        return $this->container['config']['support.translators.default'];
+        if(!$this->defaultDriver) {
+            throw new \Exception('No default translator has been set');
+        }
+        return $this->defaultDriver;
     }
 
     /**
-     * Register a custom driver creator Closure.
+     * Register a new driver.
      *
-     * @param  string  $driver
-     * @param  \Closure  $callback
-     * @return $this
+     * @param  string  $driver The name of the driver
+     * @param  \Closure  $callback Function taking the container and the config in that order
      */
-    public function extend($driver, Closure $callback)
+    public function pushDriver(string $driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback->bindTo($this, $this);
-
-        return $this;
     }
+
+    /**
+     * Register a new configuration set
+     *
+     * @param string $name The name of the configuration
+     * @param string $driver The name of the driver to use
+     * @param array $configuration An array of configuration for the driver
+     */
+    public function pushConfiguration(string $name, string $driver, array $configuration)
+    {
+        $configuration[static::DRIVER_KEY] = $driver;
+        $this->configuration[$name] = $configuration;
+    }
+
+    /**
+     * Set the default configuration name
+     *
+     * @param string $name Name of the configuration to use by default
+     */
+    public function setDefaultDriver(string $name)
+    {
+        $this->defaultDriver = $name;
+    }
+
 
     /**
      * Dynamically call the default driver instance.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return mixed
+     * @throws \Exception
      */
     public function __call($method, $parameters)
     {
         return $this->driver()->$method(...$parameters);
     }
-
-    private function createTranslator(Translator $translator)
-    {
-        return $this->container->make(TranslationFactory::class)
-            ->create($translator);
-    }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Twigger\Tests\Unit\Translate\Locale;
+namespace Twigger\Tests\Translate\Unit\Locale;
 
 use Twigger\Tests\Translate\TestCase;
 use Twigger\Translate\Locale\DetectionStrategy;

@@ -1,17 +1,34 @@
 {
     "name": "twigger/laravel-translate",
-    "description": "Translations for Laravel",
+    "description": "Supercharged instant translations for any Laravel project",
     "type": "library",
-    "license": "MIT",
     "keywords": [
         "laravel",
         "translations",
-        "google translate"
+        "language",
+        "lang",
+        "google translate",
+        "aws translate"
     ],
+    "license": "MIT",
+    "homepage": "https://github.com/tobytwigger/laravel-translate",
+    "readme": "https://github.com/tobytwigger/laravel-translate/blob/master/README.md",
     "authors": [
         {
             "name": "Toby Twigger",
-            "email": "tobytwigger1@gmail.com"
+            "email": "tobytwigger1@gmail.com",
+            "homepage": "https://github.com/tobytwigger"
+        }
+    ],
+    "support": {
+        "email": "tobytwigger1@gmail.com",
+        "issues":"https://github.com/tobytwigger/laravel-translate/issues",
+        "docs":"https://tobytwigger.github.io/laravel-translate/"
+    },
+    "funding": [
+        {
+            "type": "buymeacoffee",
+            "url": "https://www.buymeacoffee.com/translate"
         }
     ],
     "require": {
@@ -20,12 +37,20 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.4",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "orchestra/testbench": "^6.2",
+        "aws/aws-sdk-php": "^3.158"
+    },
+    "suggest": {
+        "aws/aws-sdk-php": "Needed for the AWS Translator"
     },
     "autoload": {
         "psr-4": {
             "Twigger\\Translate\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -35,8 +60,14 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Twigger\\Tests\\TranslationServiceProvider"
-            ]
+                "Twigger\\Translate\\TranslationServiceProvider"
+            ],
+            "aliases": {
+                "Translate": "Twigger\\Translate\\Translate"
+            }
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always --process-isolation --verbose --configuration phpunit.xml"
     }
 }

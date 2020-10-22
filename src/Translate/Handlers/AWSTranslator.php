@@ -1,45 +1,78 @@
 <?php
 
-namespace App\Support\Handlers;
+namespace Twigger\Translate\Translate\Handlers;
 
 use Aws\Exception\AwsException;
 use Aws\Sts\StsClient;
 use Aws\Translate\TranslateClient;
+use Illuminate\Contracts\Container\Container;
 use Twigger\Translate\Translate\Translator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Use the AWS Translate service
+ *
+ * https://aws.amazon.com/translate/
+ */
 class AWSTranslator extends Translator
 {
 
-    public function translate(string $line, string $lang): string
+    /**
+     * The container to resolve a client from
+     *
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * AWSTranslator constructor.
+     * @param array $config
+     * @param Container $container
+     */
+    public function __construct(array $config = [], Container $container)
     {
-        $config = [
-            'version' => $this->getConfig('version'),
-            'region' => $this->getConfig('region')
-        ];
+        parent::__construct($config);
+        $this->container = $container;
+    }
 
-        if ($this->getConfig('credentials.key', null) !== null && $this->getConfig('credentials.secret', null) !== null) {
-            $config['credentials'] = Arr::only($this->getConfig('credentials'), ['key', 'secret', 'token']);
-        }
+    /**
+     * @inheritDoc
+     */
+    public function translate(string $line, string $to, string $from): ?string
+    {
+        $config = $this->loadAWSConfiguration();
 
-        $client = new TranslateClient($config);
-
-        $currentLanguage = 'en';
-
-
+        $client = $this->container->make(TranslateClient::class, ['args' => $config]);
         try {
             $result = $client->translateText([
-                'SourceLanguageCode' => $currentLanguage,
-                'TargetLanguageCode' => $lang,
+                'SourceLanguageCode' => $from,
+                'TargetLanguageCode' => $to,
                 'Text' => $line,
             ]);
-            if($result->hasKey('TranslatedText')) {
+            if ($result->hasKey('TranslatedText')) {
                 return $result->get('TranslatedText');
             }
-        }catch (AwsException $e) {
-            Log::info($e->getMessage());
+        } catch (AwsException $e) {
+            Log::warning($e->getMessage());
         }
-        return $line;
+        return null;
+    }
+
+    /**
+     * Load the configuration to pass to AWS
+     *
+     * @return array
+     */
+    private function loadAWSConfiguration(): array
+    {
+        return [
+            'version' => $this->getConfig('version'),
+            'region' => $this->getConfig('region'),
+            'credentials' => [
+                'key' => $this->getConfig('key'),
+                'secret' => $this->getConfig('secret')
+            ]
+        ];
     }
 }
