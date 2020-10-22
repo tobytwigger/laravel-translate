@@ -80,8 +80,8 @@ color_scheme: dark
 
 # Google Analytics Tracking (optional)
 # e.g, UA-1234567-89
-#ga_tracking: UA-5555555-55
-#ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true by default)
+ga_tracking: G-8FNXG696PB
+ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true by default)
 
 collections:
     # Define a collection named "docs", its documents reside in the "_docs" directory
