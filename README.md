@@ -57,13 +57,14 @@ yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 The following list is a non-comprehensive collection of features which will be implemented in the next few weeks/months.
 
-- [ ] Documentation needs reviewing.
-- [ ] DB model should clear the translation cache when updated using an observer. This means that any db changes will be instantly reflected through the cache.
-- [ ] DB frontend needs to be made using Vuetify to allow translations to be created/updated.
-- [ ] A JS tool needs to be written to allow use of the provided translate API. It should limit the number of requests by grouping translation requests and sending them in one.
-- [ ] The DB interceptor needs to be optimised in terms of database calls.
-- [ ] More implementations for translation services are needed.
-- [ ] A 'free' translation service should be made, which uses AWS free tier, google translate directly and any other free-per-month service.
+If you want to get involved in building a feature, check out the issues tab or [email me!](mailto:tobytwigger1@gmail.com)
+
+- [ ] [Documentation needs reviewing.](https://tobytwigger.github.io/laravel-translate)
+- [ ] [UI for editing and adding translations.](https://github.com/tobytwigger/laravel-translate/issues/2)
+- [ ] [Translations through JavaScript.](https://github.com/tobytwigger/laravel-translate/issues/3)
+- [ ] [Translation implementations.](https://github.com/tobytwigger/laravel-translate/issues/5)
+- [ ] [Free translations.](https://github.com/tobytwigger/laravel-translate/issues/6)
+- [ ] [Control supported languages.](https://github.com/tobytwigger/laravel-translate/issues/7)
 
 ## Copyright and Licence
 
