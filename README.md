@@ -5,11 +5,6 @@
 </p>
 
 <p align="center">
-    Latest Version
-    Downloads
-    Release: passing
-    Dev: passing
-    
     <a href="https://github.com/tobytwigger/laravel-translate/releases">
         <img src="https://img.shields.io/github/v/release/tobytwigger/laravel-translate?label=Latest%20Version&sort=semver&style=plastic" alt="Latest Version">
     </a>
