@@ -1,4 +1,4 @@
-name: Run Testsuites
+name: build-status
 
 on:
   push:
