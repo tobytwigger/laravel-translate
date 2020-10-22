@@ -5,13 +5,29 @@
 </p>
 
 <p align="center">
-    <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="translate" data-color="#5F7FFF" data-emoji=""  data-font="Arial" data-text="Buy me a coffee" data-outline-color="#000" data-font-color="#fff" data-coffee-color="#fd0" ></script>
-    <a href="https://github.com/ramsey/composer-install"><img src="http://img.shields.io/badge/source-ramsey/composer--install-blue.svg?style=flat-square" alt="Source Code"></a>
-    <a href="https://github.com/ramsey/composer-install/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-darkcyan.svg?style=flat-square" alt="Read License"></a>
-    <a href="https://github.com/ramsey/composer-install/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/ramsey/composer-install/CI?logo=github&style=flat-square" alt="Build Status"></a>
-    <a href="https://codecov.io/gh/ramsey/composer-install"><img src="https://img.shields.io/codecov/c/gh/ramsey/composer-install?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
-    <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
+    Latest Version
+    Downloads
+    Release: passing
+    Dev: passing
+    
+    <a href="https://github.com/tobytwigger/laravel-translate/releases">
+        <img src="https://img.shields.io/github/v/release/tobytwigger/laravel-translate?label=Latest%20Version&sort=semver&style=plastic" alt="Latest Version">
+    </a>
+    <a href="https://github.com/tobytwigger/laravel-translate/blob/master">
+        <img src="https://img.shields.io/github/workflow/status/tobytwigger/laravel-translate/php/master?label=master%20status&style=plastic" alt="Master branch status">
+    </a>
+    <a href="https://github.com/tobytwigger/laravel-translate/blob/develop">
+        <img src="https://img.shields.io/github/workflow/status/tobytwigger/laravel-translate/php/develop?label=master%20status&style=plastic" alt="Master branch status">
+    </a>
 </p>
+
+<p align="center">
+
+    <a href="http://buymeacoffee.com/translate">
+        <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee">
+    </a>
+</p>
+
 
 ## Contents
 
