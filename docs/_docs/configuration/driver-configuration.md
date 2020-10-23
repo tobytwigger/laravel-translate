@@ -29,7 +29,7 @@ The grouping of a driver with its settings is called a configuration, and is wha
 
 ## Defining configuration in the config file
 
-In the config file, you'll see a ```configurations``` key. Each of these have a name given by the array index, and a driver given in the configuration.
+In the config file, you'll see a ```configurations``` key. Each of these has a name given by the array index, and a driver given in the configuration.
 
 ```php
 [
