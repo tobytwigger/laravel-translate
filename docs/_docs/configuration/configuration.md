@@ -22,7 +22,7 @@ has_children: true
 
 ## Introduction
 
-Laravel Translate strives to be as customizable as possible, so it can be used in any situation. The two main ways to customize the package are through the service provider and the configuration file.
+Laravel Translate strives to be as customisable as possible, so it can be used in any situation. The two main ways to customise the package are through the service provider and the configuration file.
 
 The configuration file defines sensible defaults to some required settings, including things like the name of the table to use, the API url and allowed languages.
 
