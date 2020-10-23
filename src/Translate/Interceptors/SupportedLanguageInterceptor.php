@@ -66,7 +66,7 @@ class SupportedLanguageInterceptor extends TranslationInterceptor
     /**
      * Revoke all language support
      */
-    public static function revokeAll(): void
+    public static function supportAll(): void
     {
         static::$supported = [];
     }

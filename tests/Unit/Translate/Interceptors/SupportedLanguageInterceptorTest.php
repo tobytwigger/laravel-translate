@@ -12,12 +12,12 @@ class SupportedLanguageInterceptorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        SupportedLanguageInterceptor::revokeAll();
+        SupportedLanguageInterceptor::supportAll();
     }
 
     protected function tearDown(): void
     {
-        SupportedLanguageInterceptor::revokeAll();
+        SupportedLanguageInterceptor::supportAll();
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class SupportedLanguageInterceptorTest extends TestCase
     public function it_revokes_all_languages()
     {
         SupportedLanguageInterceptor::support(['ru', 'fr']);
-        SupportedLanguageInterceptor::revokeAll();
+        SupportedLanguageInterceptor::supportAll();
         SupportedLanguageInterceptor::support(['en']);
 
         $translator = $this->prophesize(\Twigger\Translate\Translate\Translator::class);
