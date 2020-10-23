@@ -57,11 +57,7 @@ class TranslationModel extends Model
     public function __construct($attributes = [])
     {
         $this->table = config('laravel-translate.table', 'translations');
-
         parent::__construct($attributes);
-        self::creating(function($model) {
-            $model->id = static::getUniqueKey($model->text_original, $model->lang_to, $model->lang_from);
-        });
     }
 
     protected static function booted()
