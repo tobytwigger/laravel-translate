@@ -33,22 +33,22 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_makes_a_valid_request_with_a_single_line(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Line',
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(200);
     }
 
     /** @test */
     public function it_makes_a_valid_request_with_multiple_lines(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Line1', 'line2'],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(200);
     }
@@ -69,10 +69,10 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
         Detect::swap($detector->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'line1',
             'source_lang' => 'en',
-        ]);
+        ]));
 
         $response->assertStatus(200);
     }
@@ -89,20 +89,20 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
         config()->set('app.locale', 'ru');
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Line1',
             'target_lang' => 'en',
-        ]);
+        ]));
 
         $response->assertStatus(200);
     }
 
     /** @test */
     public function it_validates_if_line_and_lines_arent_given(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -113,12 +113,12 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_both_line_and_lines_are_given(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test Line',
             'lines' => ['test', 'one'],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -138,12 +138,12 @@ class TranslationControllerRequestTest extends LaravelTestCase
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => '',
             'lines' => ['Test', 'One'],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -162,13 +162,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test',
-            'lines' => [],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]) . '&lines[]');
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -179,11 +177,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_any_lines_that_are_not_strings(){
-        $response = $this->postJson('_translate', [
-            'lines' => ['Line1', 444, new class{}],
+        $response = $this->getJson('_translate?' . http_build_query([
+            'lines' => ['Line1', ['test_one' => 'hmm'], ['test' => 'not ok']],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -194,11 +192,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_lines_is_a_string(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => 'Test Line',
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -208,11 +206,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_line_is_an_array(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => ['test'],
             'source_lang' => 'en',
             'target_lang' => 'fr'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -221,26 +219,12 @@ class TranslationControllerRequestTest extends LaravelTestCase
     }
 
     /** @test */
-    public function it_validates_if_target_lang_is_an_integer(){
-        $response = $this->postJson('_translate', [
-            'line' => 'test',
-            'source_lang' => 'en',
-            'target_lang' => 55
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors([
-            'target_lang' => 'The target language must be an ISO-639-1 language code',
-        ]);
-    }
-
-    /** @test */
     public function it_validates_if_target_lang_is_long(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'source_lang' => 'en',
             'target_lang' => 'not_a_code_as_too_long'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -250,11 +234,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_target_lang_is_empty(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'source_lang' => 'en',
             'target_lang' => ''
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -265,11 +249,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_target_lang_is_wrong_code(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'source_lang' => 'en',
             'target_lang' => 'zzni'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -278,26 +262,12 @@ class TranslationControllerRequestTest extends LaravelTestCase
     }
 
     /** @test */
-    public function it_validates_if_source_lang_is_an_integer(){
-        $response = $this->postJson('_translate', [
-            'line' => 'test',
-            'target_lang' => 'en',
-            'source_lang' => 55
-        ]);
-
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors([
-            'source_lang' => 'The source language must be an ISO-639-1 language code',
-        ]);
-    }
-
-    /** @test */
     public function it_validates_if_source_lang_is_long(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'target_lang' => 'en',
             'source_lang' => 'not_a_code_as_too_long'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -307,11 +277,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_source_lang_is_empty(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'target_lang' => 'en',
             'source_lang' => ''
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -322,11 +292,11 @@ class TranslationControllerRequestTest extends LaravelTestCase
 
     /** @test */
     public function it_validates_if_source_lang_is_wrong_code(){
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'test',
             'target_lang' => 'en',
             'source_lang' => 'zzni'
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([

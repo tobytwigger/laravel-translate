@@ -19,11 +19,11 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test Line 1',
             'source_lang' => 'fr',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -41,11 +41,11 @@ class TranslationControllerTest extends LaravelTestCase
 
         config()->set('laravel-translate.detection.body_key', 'some_random_key');
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test Line 1',
             'source_lang' => 'fr',
             'some_random_key' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -63,10 +63,10 @@ class TranslationControllerTest extends LaravelTestCase
 
         config()->set('app.locale', 'fr');
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test Line 1',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -84,11 +84,11 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Test Line 1', 'Test Line 2'],
             'source_lang' => 'fr',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -108,11 +108,11 @@ class TranslationControllerTest extends LaravelTestCase
 
         config()->set('laravel-translate.detection.body_key', 'some_random_key');
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Test Line 1', 'Test Line 2'],
             'source_lang' => 'fr',
             'some_random_key' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -132,10 +132,10 @@ class TranslationControllerTest extends LaravelTestCase
 
         config()->set('app.locale', 'fr');
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Test Line 1', 'Test Line 2'],
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -153,11 +153,11 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'line' => 'Test Line 1',
             'source_lang' => 'fr',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -175,11 +175,11 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Test Line 1', 'Test Line 2', 'Test Line 3'],
             'source_lang' => 'fr',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -197,11 +197,11 @@ class TranslationControllerTest extends LaravelTestCase
         $translationFactory->driver(null)->willReturn($translator->reveal());
         $this->app->instance(TranslationManager::class, $translationFactory->reveal());
 
-        $response = $this->postJson('_translate', [
+        $response = $this->getJson('_translate?' . http_build_query([
             'lines' => ['Test Line 1', 'Test Line 2', 'Test Line 3'],
             'source_lang' => 'fr',
             'target_lang' => 'ru'
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $response->assertExactJson([

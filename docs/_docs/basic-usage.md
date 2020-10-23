@@ -66,12 +66,16 @@ You may then edit the ```locale``` key in your ```config/app.php``` file to defi
 
 The Laravel Translate package provides an API for translating any text. The endpoint is defined in the configuration file, but defaults to ```_translate```. The source and target language are automatically detected as described above.
 
+A call to the translate API will be cached for 7 days in the browser, to load translations as quickly as possible.
+
+The following body content should be encoded to the url.
+
 ### Translating single lines
 
 #### Request
 
 ```http
-POST /_translate HTTP/1.1
+GET /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 {
@@ -94,7 +98,7 @@ Content-Type: application/json
 #### Request
 
 ```http
-POST /_translate HTTP/1.1
+GET /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 {
@@ -124,7 +128,7 @@ This will translate the line from english to french. Although ```target_lang``` 
 #### Request
 
 ```http
-POST /_translate HTTP/1.1
+GET /_translate HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 {

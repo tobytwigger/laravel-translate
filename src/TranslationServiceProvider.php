@@ -173,7 +173,9 @@ class TranslationServiceProvider extends ServiceProvider
         $this->parseConfig();
         $this->defineBladeDirectives();
 
-        Route::middleware('cache.headers:public;max_age=31540000;etag')->post(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])->name('translator.translate');
+        Route::middleware('cache.headers:public;max_age=604800;etag')
+            ->get(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])
+            ->name('translator.translate');
 
     }
 
