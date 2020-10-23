@@ -17,6 +17,7 @@ use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
 use Twigger\Translate\Translate\Interceptors\LangFileInterceptor;
 use Twigger\Translate\Translate\Interceptors\SameLanguageInterceptor;
+use Twigger\Translate\Translate\Interceptors\SupportedLanguageInterceptor;
 use Twigger\Translate\Translate\TranslationFactory;
 use Twigger\Translate\Translate\TranslationManager;
 use Illuminate\Support\Facades\Route;
@@ -252,6 +253,9 @@ class TranslationServiceProvider extends ServiceProvider
         $translationFactory = app(TranslationFactory::class);
 
         $translationFactory->intercept(SameLanguageInterceptor::class);
+
+        $translationFactory->intercept(SupportedLanguageInterceptor::class);
+        SupportedLanguageInterceptor::support(config('laravel-translate.supported_languages', []));
 
         if(static::$withCacheInterceptor) {
             $translationFactory->intercept(CacheInterceptor::class);

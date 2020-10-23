@@ -169,9 +169,9 @@ abstract class TranslationInterceptor extends Translator
      * @param string $line The line in the original language
      * @param string $to The language to translate to
      * @param string $from The language to translate from
-     * @return string The translation of the line
+     * @return string|null The translation of the line
      */
-    abstract protected function get(string $line, string $to, string $from): string;
+    abstract protected function get(string $line, string $to, string $from): ?string;
 
     /**
      * Save the translation for the given language

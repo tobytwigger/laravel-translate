@@ -31,6 +31,31 @@ The ```table``` key defines the table to use. This must be set before the migrat
 
 It defaults to ```translations```, which is a sensible default assuming you don't already have a table with this name.
 
+### Supported Languages
+
+The convenience of instant translations through a translation service comes with one main downside - you're relying on the translation service to accurately translate your website. It won't always produce the best translation, which is why you're able to override the translation through your lang files or the database.
+
+A happy medium is to use instant translations to initially translate the site, then reviewing the translations and changing any translations if necessary. To stop users using your website in a language which is being reviewed, you can define the languages that should be supported. Any language requested that isn't in this array is rejected.
+
+#### Support languages in config
+
+The ```supported_languages``` key in the config file contains an array of supported languages. If it's an empty array, all languages are supported. If anything is in the array, only those languages will be supported.
+
+#### Support languages directly
+
+At any point (generally in your service provider), you can call the following to support any given language(s).
+
+```php
+    \Twigger\Translate\Translate\Interceptors\SupportedLanguageInterceptor::support(['en', 'fr']);
+```
+
+This function can be called multiple times to support multiple languages. You can pass it a single language or multiple languages.
+
+```php
+\Twigger\Translate\Translate\Interceptors\SupportedLanguageInterceptor::support('en');
+\Twigger\Translate\Translate\Interceptors\SupportedLanguageInterceptor::support(['en', 'fr']);
+```
+
 ### Detection
 
 These are configuration options related to the target language detector. Most detectors have configuration to change things like keys to look for, and all of them can be turned off by making calls in your Service Provider.

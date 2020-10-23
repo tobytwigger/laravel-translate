@@ -38,6 +38,13 @@ return [
     'table' => 'translations',
 
     /**
+     * List of languages supported. A user cannot translate to a language not in this list.
+     *
+     * Leave as an empty array to support all languages.
+     */
+    'supported_languages' => [],
+
+    /**
      * Configuration for the Detect functionality
      */
     'detection' => [
