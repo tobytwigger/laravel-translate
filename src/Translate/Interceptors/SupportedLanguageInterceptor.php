@@ -64,7 +64,7 @@ class SupportedLanguageInterceptor extends TranslationInterceptor
     }
 
     /**
-     * Revoke all language support
+     * Support all languages
      */
     public static function supportAll(): void
     {
