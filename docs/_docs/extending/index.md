@@ -36,6 +36,6 @@ No matter what, you can [create your own method]({{ site.baseurl }}{% link _docs
 
 The translator provides two interfaces - a [translator]({{ site.baseurl }}{% link _docs/extending/translator.md %}) and an [interceptor]({{ site.baseurl }}{% link _docs/extending/interceptor.md %}). Although these are very similar, and in fact an interceptor is just a special form of translator, they are used for very different reasons.
 
-A translator should be able to translate almost any text. An interceptor only has certain text it is able to translate, and defaults to the translator if the interceptor is not able to translate the text. For example, lang files are interceptors as you have to define each translation so it's likely any given text won't have a translation. Google translate is a translator, since it should be able to handle most strings without first needing to define them. 
+A translator should be able to translate almost any text. An interceptor only has a certain text that is able to translate, and defaults to the translator if the interceptor is not able to translate the text. For example, lang files are interceptors as you have to define each translation so it's likely any given text won't have a translation. Google translate is a translator, since it should be able to handle most strings without first needing to define them.
 
 If you're unsure if you need to create an interceptor or a translator, ask yourself if it's likely the method won't be able to translate any random string. If this is the case, you want an interceptor.
