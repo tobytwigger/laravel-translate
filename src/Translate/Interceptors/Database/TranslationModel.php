@@ -3,6 +3,8 @@
 namespace Twigger\Translate\Translate\Interceptors\Database;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
+use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,10 +57,16 @@ class TranslationModel extends Model
     public function __construct($attributes = [])
     {
         $this->table = config('laravel-translate.table', 'translations');
-
         parent::__construct($attributes);
-        self::creating(function($model) {
+    }
+
+    protected static function booted()
+    {
+        static::creating(function($model) {
             $model->id = static::getUniqueKey($model->text_original, $model->lang_to, $model->lang_from);
+        });
+        static::saved(function($model) {
+            Cache::forget(CacheInterceptor::getCacheKey($model->text_original, $model->lang_to, $model->lang_from));
         });
     }
 

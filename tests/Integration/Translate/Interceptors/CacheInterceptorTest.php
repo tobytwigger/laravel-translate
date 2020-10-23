@@ -15,7 +15,7 @@ class CacheInterceptorTest extends TestCase
     /** @test */
     public function it_returns_a_single_translation_from_the_cache_if_possible(){
         $cache = new Repository(new ArrayStore());
-        $cache->forever(md5(CacheInterceptor::class . 'Testenfr'), 'New Line');
+        $cache->forever(CacheInterceptor::getCacheKey('Test', 'en', 'fr'), 'New Line');
 
         $translator = $this->prophesize(Translator::class);
         $translator->translate(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
@@ -31,35 +31,35 @@ class CacheInterceptorTest extends TestCase
         $translator = $this->prophesize(Translator::class);
         $translator->translate('Test', 'en', 'fr')->shouldBeCalled()->willReturn('New Line');
 
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test', 'en', 'fr' )));
 
 
         $interceptor = new CacheInterceptor([], $translator->reveal(), $cache);
         $this->assertEquals('New Line', $interceptor->translate('Test', 'en', 'fr'));
 
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test', 'en', 'fr')));
     }
 
     /** @test */
     public function it_can_return_and_save_a_mixture_of_translations_and_cached_translations(){
         $cache = new Repository(new ArrayStore());
-        $cache->forever(md5(CacheInterceptor::class . 'Test2enfr'), 'New Line 2');
-        $cache->forever(md5(CacheInterceptor::class . 'Test3enfr'), 'New Line 3');
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Test4enfr')));
+        $cache->forever(CacheInterceptor::getCacheKey('Test2', 'fr', 'en'), 'New Line 2');
+        $cache->forever(CacheInterceptor::getCacheKey('Test3', 'fr', 'en'), 'New Line 3');
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test', 'fr', 'en')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test4', 'fr', 'en')));
 
         $translator = $this->prophesize(Translator::class);
-        $translator->translateMany(['Test', 'Test4'], 'en', 'fr')->shouldBeCalled()->willReturn(['New Line', 'New Line 4']);
+        $translator->translateMany(['Test', 'Test4'], 'fr', 'en')->shouldBeCalled()->willReturn(['New Line', 'New Line 4']);
 
         $interceptor = new CacheInterceptor([], $translator->reveal(), $cache);
         $this->assertEquals([
             'New Line', 'New Line 2', 'New Line 3', 'New Line 4'
         ], $interceptor->translateMany([
             'Test', 'Test2', 'Test3', 'Test4'
-            ], 'en', 'fr'));
+            ], 'fr', 'en'));
 
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Test4enfr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test', 'fr', 'en')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test4', 'fr', 'en')));
 
     }
 
@@ -67,10 +67,10 @@ class CacheInterceptorTest extends TestCase
     public function it_can_return_all_translations_from_the_cache(){
         $cache = new Repository(new ArrayStore());
 
-        $cache->forever(md5(CacheInterceptor::class . 'Testenfr'), 'New Line');
-        $cache->forever(md5(CacheInterceptor::class . 'Test2enfr'), 'New Line 2');
-        $cache->forever(md5(CacheInterceptor::class . 'Test3enfr'), 'New Line 3');
-        $cache->forever(md5(CacheInterceptor::class . 'Test4enfr'), 'New Line 4');
+        $cache->forever(CacheInterceptor::getCacheKey('Test', 'en', 'fr'), 'New Line');
+        $cache->forever(CacheInterceptor::getCacheKey('Test2', 'en', 'fr'), 'New Line 2');
+        $cache->forever(CacheInterceptor::getCacheKey('Test3', 'en', 'fr'), 'New Line 3');
+        $cache->forever(CacheInterceptor::getCacheKey('Test4', 'en', 'fr'), 'New Line 4');
 
         $translator = $this->prophesize(Translator::class);
         $translator->translateMany(Argument::any(), Argument::any(), Argument::any())
@@ -88,10 +88,10 @@ class CacheInterceptorTest extends TestCase
     public function it_can_return_and_save_all_translations(){
         $cache = new Repository(new ArrayStore());
 
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Test2enfr')));
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Test3enfr')));
-        $this->assertFalse($cache->has(md5(CacheInterceptor::class . 'Test4enfr')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test', 'en', 'fr')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test2', 'en', 'fr')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test3', 'en', 'fr')));
+        $this->assertFalse($cache->has(CacheInterceptor::getCacheKey('Test4', 'en', 'fr')));
 
         $translator = $this->prophesize(Translator::class);
         $translator->translateMany(['Test', 'Test2', 'Test3', 'Test4'], 'en', 'fr')
@@ -105,10 +105,10 @@ class CacheInterceptorTest extends TestCase
             'Test', 'Test2', 'Test3', 'Test4'
         ], 'en', 'fr'));
 
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Testenfr')));
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Test2enfr')));
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Test3enfr')));
-        $this->assertTrue($cache->has(md5(CacheInterceptor::class . 'Test4enfr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test', 'en', 'fr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test2', 'en', 'fr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test3', 'en', 'fr')));
+        $this->assertTrue($cache->has(CacheInterceptor::getCacheKey('Test4', 'en', 'fr')));
     }
 
 }

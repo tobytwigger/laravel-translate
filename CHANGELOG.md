@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-
+### Added
+- static getCacheKey function in the CacheInterceptor to get the key of a given translation
+- [Issue 1](https://github.com/tobytwigger/laravel-translate/issues/1) - Clear the cache when a database translation is saved
 
 ## [0.1] - (09/09/2020)
 

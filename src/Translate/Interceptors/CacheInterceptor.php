@@ -36,7 +36,7 @@ class CacheInterceptor extends TranslationInterceptor
     {
         return array_values((array) $this->cache->getMultiple(
             array_map(function($line) use ($to, $from) {
-                return $this->getKey($line, $to, $from);
+                return static::getCacheKey($line, $to, $from);
             }, $lines)
         ));
     }
@@ -46,7 +46,7 @@ class CacheInterceptor extends TranslationInterceptor
      */
     protected function canIntercept(string $line, string  $to, string $from): bool
     {
-        return $this->cache->has($this->getKey($line, $to, $from));
+        return $this->cache->has(static::getCacheKey($line, $to, $from));
     }
 
     /**
@@ -54,7 +54,7 @@ class CacheInterceptor extends TranslationInterceptor
      */
     protected function get(string $line, string  $to, string $from): string
     {
-        return $this->cache->get($this->getKey($line, $to, $from), null);
+        return $this->cache->get(static::getCacheKey($line, $to, $from), null);
     }
 
     /**
@@ -62,7 +62,7 @@ class CacheInterceptor extends TranslationInterceptor
      */
     protected function save(string $line, string $to, string $from, string $translation): void
     {
-        $this->cache->forever($this->getKey($line, $to, $from), $translation);
+        $this->cache->forever(static::getCacheKey($line, $to, $from), $translation);
     }
 
     /**
@@ -74,8 +74,8 @@ class CacheInterceptor extends TranslationInterceptor
      *
      * @return string A unique key
      */
-    private function getKey(string $line, string  $to, string $from): string
+    public static function getCacheKey(string $line, string  $to, string $from): string
     {
-        return md5(CacheInterceptor::class . $line .  $to . $from);
+        return md5(strtolower(CacheInterceptor::class . $line .  $to . $from));
     }
 }
