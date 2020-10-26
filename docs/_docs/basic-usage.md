@@ -37,6 +37,28 @@ There is an alternative function called ```translateMany```, which takes an arra
 $frenchStrings = \Twigger\Translate\Translate::translateMany(['A string to translate', 'A second string to translate'], 'fr', 'en');
 ```
 
+These functions will return the string (or an array of strings) of translated text. If a given string couldn't be translated, null will be returned (or one of the array elements).
+
+To provide a seamless integration, you should always return the original string if a translation failed. This common pattern can be achieved using the null coalescing operator.
+
+```php
+// Single line
+$line = 'A string to translate';
+return \Twigger\Translate\Translate::translate($line, 'fr', 'en') ?? $line;
+
+// Multiple Lines
+$lines = ['A string to translate', 'A second string to translate'];
+$translatedLines = \Twigger\Translate\Translate::translateMany($lines, 'fr', 'en');
+
+// PHP 7.4
+return \array_map(fn ($string, $index) => $string ?? $lines[$index], $translatedLines, array_keys($translatedLines));
+
+// <= PHP 7.3
+return \array_map(function($string, $index) use ($lines) {
+    return $string ?? $lines[$index];
+}, $translatedLines, array_keys($translatedLines));
+
+```
 
 ### Target Language
 
@@ -68,7 +90,7 @@ The Laravel Translate package provides an API for translating any text. The endp
 
 A call to the translate API will be cached for 7 days in the browser, to load translations as quickly as possible.
 
-The following body content should be encoded to the url.
+The following body content should be encoded to the url. If a translation failed, its respective array element or string will return null.
 
 ### Translating single lines
 
@@ -174,6 +196,8 @@ This directive is also accessible through ```__t```, which is shorter and cleane
 @__t('Welcome')
 ```
 
+The directive will output the translated string. If the original text could not be translated, it will just be returned to ensure a user of your site sees some text.
+
 ## Helper Function
 
 Rather than relying on the facade, you can easily use our helper function which uses the facade in the background. This takes the same arguments as the facade.
@@ -189,12 +213,12 @@ The target and source language will be automatically detected if left blank, mea
 laravelTranslate('Line to Translate');
 ```
 
-If no arguments are given, an instance of the Translation Manager will be given.
+If no arguments are given, an instance of the Translation Manager will be given. If a string is given as the first argument, a translated string is returned. If the translation failed, the original string is returned.
 
 This function is also accessible through ```__t```, which is shorter and cleaner to use.
 
 ```php
-$frenchString = __t('Welcome'); // Bienvenue
+echo __t('Welcome'); // Bienvenue
+echo __t('Welcome', 'not-a-language-so-fails'); // Welcome
 ```
-
 ---

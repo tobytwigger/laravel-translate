@@ -22,7 +22,7 @@ if(!function_exists('laravelTranslate')) {
             $line,
             $to ?? \Twigger\Translate\Detect::lang(),
             $from ?? config('app.locale')
-        );
+        ) ?? $line;
 
     }
 
