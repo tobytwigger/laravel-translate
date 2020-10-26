@@ -54,7 +54,9 @@ class AWSTranslator extends Translator
                 return $result->get('TranslatedText');
             }
         } catch (AwsException $e) {
-            Log::warning($e->getMessage());
+            if($this->getConfig('log_errors', true)) {
+                Log::warning($e->getMessage());
+            }
         }
         return null;
     }

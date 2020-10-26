@@ -75,7 +75,7 @@ class AWSTranslatorTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_null_if_an_error_occured(){
+    public function it_returns_null_if_an_error_occured_and_logs(){
         $translator = new AWSTranslator([
             'version' => 'latest',
             'region' => 'us-west-1',
@@ -88,6 +88,79 @@ class AWSTranslatorTest extends TestCase
         TranslateClient::translateShouldThrow(new AwsException('Some error message', new Command('translate')));
         $log = $this->prophesize(Logger::class);
         $log->warning('Some error message')->shouldBeCalled();
+        Log::swap($log->reveal());
+
+        $translatedText = $translator->translate('Some Line', 'fr', 'en');
+
+        $this->assertNull($translatedText);
+        $this->assertEquals([
+            'version' => 'latest',
+            'region' => 'us-west-1',
+            'credentials' => [
+                'key' => 'aws-key',
+                'secret' => 'aws-secret'
+            ]
+        ], TranslateClient::getArgs());
+
+        $this->assertEquals([
+            'SourceLanguageCode' => 'en',
+            'TargetLanguageCode' => 'fr',
+            'Text' => 'Some Line',
+        ], TranslateClient::$translateArgs);
+    }
+
+
+    /** @test */
+    public function it_returns_null_if_an_error_occured_and_logs_if_log_errors_is_true(){
+        $translator = new AWSTranslator([
+            'version' => 'latest',
+            'region' => 'us-west-1',
+            'key' => 'aws-key',
+            'secret' => 'aws-secret',
+            'log_errors' => true
+        ], $this->container->reveal());
+
+        $result = $this->prophesize(Result::class);
+
+        TranslateClient::translateShouldThrow(new AwsException('Some error message', new Command('translate')));
+        $log = $this->prophesize(Logger::class);
+        $log->warning('Some error message')->shouldBeCalled();
+        Log::swap($log->reveal());
+
+        $translatedText = $translator->translate('Some Line', 'fr', 'en');
+
+        $this->assertNull($translatedText);
+        $this->assertEquals([
+            'version' => 'latest',
+            'region' => 'us-west-1',
+            'credentials' => [
+                'key' => 'aws-key',
+                'secret' => 'aws-secret'
+            ]
+        ], TranslateClient::getArgs());
+
+        $this->assertEquals([
+            'SourceLanguageCode' => 'en',
+            'TargetLanguageCode' => 'fr',
+            'Text' => 'Some Line',
+        ], TranslateClient::$translateArgs);
+    }
+
+    /** @test */
+    public function it_returns_null_if_an_error_occured_and_does_not_log_if_log_errors_false(){
+        $translator = new AWSTranslator([
+            'version' => 'latest',
+            'region' => 'us-west-1',
+            'key' => 'aws-key',
+            'secret' => 'aws-secret',
+            'log_errors' => false
+        ], $this->container->reveal());
+
+        $result = $this->prophesize(Result::class);
+
+        TranslateClient::translateShouldThrow(new AwsException('Some error message', new Command('translate')));
+        $log = $this->prophesize(Logger::class);
+        $log->warning('Some error message')->shouldNotBeCalled();
         Log::swap($log->reveal());
 
         $translatedText = $translator->translate('Some Line', 'fr', 'en');
