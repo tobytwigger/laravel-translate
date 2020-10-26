@@ -53,7 +53,7 @@ $translatedLines = \Twigger\Translate\Translate::translateMany($lines, 'fr', 'en
 // PHP 7.4
 return \array_map(fn ($string, $index) => $string ?? $lines[$index], $translatedLines, array_keys($translatedLines));
 
-// PHP 7.3 <
+// <= PHP 7.3
 return \array_map(function($string, $index) use ($lines) {
     return $string ?? $lines[$index];
 }, $translatedLines, array_keys($translatedLines));
@@ -90,7 +90,7 @@ The Laravel Translate package provides an API for translating any text. The endp
 
 A call to the translate API will be cached for 7 days in the browser, to load translations as quickly as possible.
 
-The following body content should be encoded to the url.
+The following body content should be encoded to the url. If a translation failed, its respective array element or string will return null.
 
 ### Translating single lines
 
