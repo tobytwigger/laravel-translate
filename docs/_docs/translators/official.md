@@ -62,6 +62,7 @@ The translator requires AWS access. These are usually already defined in Laravel
 - Region: The AWS region to use (e.g. us-west-1).
 - Key: The AWS key.
 - Secret: The AWS secret.
+- Log Errors: Should errors be logged if AWS throws an error.
             
 ### Example
 
@@ -72,5 +73,6 @@ The translator requires AWS access. These are usually already defined in Laravel
     'region' => env('AWS_DEFAULT_REGION', 'eu-west-2'),
     'key'    => env('AWS_ACCESS_KEY_ID'),
     'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
 ];
 ```
