@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Basic Usage
 nav_order: 2
 ---

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Configuration
 nav_order: 4
 has_children: true

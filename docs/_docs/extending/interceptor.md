@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Interceptor
 nav_order: 9
 parent: Extending

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Driver Configuration
 nav_order: 6
 parent: Configuration
