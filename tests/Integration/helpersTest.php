@@ -77,4 +77,22 @@ class helpersTest extends LaravelTestCase
         $this->assertEquals('Line 1 translated', \__t('Line 1'));
     }
 
+    /** @test */
+    public function __t_returns_the_given_string_if_the_translator_returns_null(){
+        $translator = $this->prophesize(Translator::class);
+        $translator->translate('Line 1', 'fr', 'en')->shouldBeCalled()->willReturn(null);
+        $this->app->instance('laravel-translate', $translator->reveal());
+
+        $this->assertEquals('Line 1', \__t('Line 1', 'fr', 'en'));
+    }
+
+    /** @test */
+    public function laravelTranslate_returns_the_given_string_if_the_translator_returns_null(){
+        $translator = $this->prophesize(Translator::class);
+        $translator->translate('Line 1', 'fr', 'en')->shouldBeCalled()->willReturn(null);
+        $this->app->instance('laravel-translate', $translator->reveal());
+
+        $this->assertEquals('Line 1', \laravelTranslate('Line 1', 'fr', 'en'));
+    }
+
 }
