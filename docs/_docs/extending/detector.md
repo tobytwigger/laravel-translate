@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Detector
 nav_order: 8
 parent: Extending

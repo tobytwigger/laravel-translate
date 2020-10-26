@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Introduction
 nav_order: 1
 ---

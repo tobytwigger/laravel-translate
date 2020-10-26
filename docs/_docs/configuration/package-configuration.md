@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Configure the package behaviour
 nav_order: 5
 parent: Configuration

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs
 title: Extending
 nav_order: 7
 has_children: true
