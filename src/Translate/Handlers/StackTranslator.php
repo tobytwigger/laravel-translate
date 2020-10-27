@@ -4,6 +4,7 @@ namespace Twigger\Translate\Translate\Handlers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
+use Twigger\Translate\Translate\TranslationManager;
 use Twigger\Translate\Translate\Translator;
 
 /**
@@ -13,14 +14,14 @@ class StackTranslator extends Translator
 {
 
     /**
-     * @var Container
+     * @var TranslationManager
      */
-    private $container;
+    private $translationManager;
 
-    public function __construct(array $config = [], Container $container)
+    public function __construct(array $config = [], TranslationManager $translationManager)
     {
         parent::__construct($config);
-        $this->container = $container;
+        $this->translationManager = $translationManager;
     }
 
     public function translate(string $line, string $to, string $from): ?string
@@ -28,9 +29,9 @@ class StackTranslator extends Translator
         foreach($this->getConfig('translators', []) as $translator)
         {
             try {
-                $translation = $this->getTranslator($translator)
+                $translation = $this->translationManager->driver($translator)
                     ->translate($line, $to, $from);
-            } catch (BindingResolutionException $e) {
+            } catch (\Exception $e) {
                 $translation = null;
             }
             if($translation !== null) {
@@ -40,15 +41,4 @@ class StackTranslator extends Translator
         return null;
     }
 
-    /**
-     * Create a translator to use
-     *
-     * @param string $translator Class name of the translator
-     * @return Translator
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    private function getTranslator(string $translator)
-    {
-        return $this->container->make($translator);
-    }
 }

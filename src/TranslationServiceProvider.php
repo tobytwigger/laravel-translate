@@ -15,6 +15,7 @@ use Twigger\Translate\Locale\Strategies\FallbackDetectionStrategy;
 use Twigger\Translate\Translate\Handlers\AWSTranslator;
 use Twigger\Translate\Translate\Handlers\GoogleTranslateFreeTranslator;
 use Twigger\Translate\Translate\Handlers\NullTranslator;
+use Twigger\Translate\Translate\Handlers\StackTranslator;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
 use Twigger\Translate\Translate\Interceptors\LangFileInterceptor;
@@ -287,6 +288,10 @@ class TranslationServiceProvider extends ServiceProvider
 
         Translate::pushDriver('google-translate-free', function ($app, $config) {
             return new GoogleTranslateFreeTranslator($config, new GoogleTranslate());
+        });
+
+        Translate::pushDriver('stack', function ($app, $config) {
+            return new StackTranslator($config, $app->make(TranslationManager::class));
         });
     }
 
