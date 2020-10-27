@@ -39,10 +39,12 @@
         "phpunit/phpunit": "^9.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "orchestra/testbench": "^6.2",
-        "aws/aws-sdk-php": "^3.158"
+        "aws/aws-sdk-php": "^3.158",
+        "stichoza/google-translate-php":  "^4.1.0"
     },
     "suggest": {
-        "aws/aws-sdk-php": "Needed for the AWS Translator"
+        "aws/aws-sdk-php": "Needed for the AWS Translator",
+        "stichoza/google-translate-php": "Needed for the free Google Translate API"
     },
     "autoload": {
         "psr-4": {

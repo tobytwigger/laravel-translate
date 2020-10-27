@@ -76,3 +76,68 @@ The translator requires AWS access. These are usually already defined in Laravel
     'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
 ];
 ```
+
+--- 
+
+## Google Translate - Free
+
+> Driver for the free Google Translate API.
+
+It is not recommended to use this driver in production for a critical site, since this API is internal to Google Translate and so may be changed.
+
+### Prerequisites
+
+This translator makes use of the fantastic [google translator package](https://github.com/Stichoza/google-translate-php) from [Stichoza](https://github.com/Stichoza). Therefore, you will need to require the aws sdk as a dependency.
+
+```console
+    composer require stichoza/google-translate-php
+```
+
+### Usage
+- Driver Key: ```google-translate-free```
+
+Configuration:
+- Log Errors: Should errors be logged if the translation throws an error.
+
+### Example
+
+```php
+[
+    \Twigger\Translate\Translate\TranslationManager::DRIVER_KEY => 'google-translate-free',
+    'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
+];
+```
+
+---
+
+## Stack Driver
+
+> Allows many translators to be called in a chain to get a translation 
+
+Whilst not providing a translation itself, the stack driver takes a set of defined translator configurations. It calls each one in turn - if a result is given it is returned. If the first translator has a null result (the translation failed), it'll then call the second translator and so on.
+
+This can be a very useful driver with interesting results. For example, we could use the free google translator as the main translator to save costs. A downside to this is this translator is often blocked by google for a few hours, meaning translations can't occur. By stacking the AWS translator (paid service), if the google translator fails the AWS translator picks up the slack and continues ensuring translations can happen. Once the Google translator starts working again, it takes over to save on costs.
+
+### Prerequisites
+
+There are no prerequisites for the stack driver. Make sure you've defined configurations to use in the stack driver though.
+
+### Usage
+- Driver Key: ```stack```
+
+Configuration:
+- Translators: An array of configuration names of other translators to use.
+
+### Example
+
+```php
+[
+    \Twigger\Translate\Translate\TranslationManager::DRIVER_KEY => 'stack',
+    'translators' => [
+        'aws-free-configuration-1',
+        'aws-configuration-2',
+        'deepl',
+        'google-translate-free'
+    ]
+];
+```
