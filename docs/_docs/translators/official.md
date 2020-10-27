@@ -76,3 +76,36 @@ The translator requires AWS access. These are usually already defined in Laravel
     'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
 ];
 ```
+
+--- 
+
+## Google
+
+## Free
+
+> Driver for the free Google Translate API.
+
+It is not recommended to use this driver in production for a critical site, since this API is internal to Google Translate and so may be changed.
+
+### Prerequisites
+
+This translator makes use of the fantastic [google translator package](https://github.com/Stichoza/google-translate-php) from [Stichoza](https://github.com/Stichoza). Therefore, you will need to require the aws sdk as a dependency.
+
+```console
+    composer require stichoza/google-translate-php
+```
+
+### Usage
+- Driver Key: ```google-translate-free```
+
+Configuration:
+- Log Errors: Should errors be logged if the translation throws an error.
+
+### Example
+
+```php
+[
+    \Twigger\Translate\Translate\TranslationManager::DRIVER_KEY => 'google-translate-free',
+    'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
+];
+```

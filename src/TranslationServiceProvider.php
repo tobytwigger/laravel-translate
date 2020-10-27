@@ -5,6 +5,7 @@ namespace Twigger\Translate;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 use Twigger\Translate\Http\Controllers\TranslationController;
 use Twigger\Translate\Locale\Strategies\BodyDetectionStrategy;
 use Twigger\Translate\Locale\Strategies\CookieDetectionStrategy;
@@ -12,6 +13,7 @@ use Twigger\Translate\Locale\DetectionStrategyStore;
 use Twigger\Translate\Locale\Strategies\HeaderDetectionStrategy;
 use Twigger\Translate\Locale\Strategies\FallbackDetectionStrategy;
 use Twigger\Translate\Translate\Handlers\AWSTranslator;
+use Twigger\Translate\Translate\Handlers\GoogleTranslateFreeTranslator;
 use Twigger\Translate\Translate\Handlers\NullTranslator;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
@@ -281,6 +283,10 @@ class TranslationServiceProvider extends ServiceProvider
 
         Translate::pushDriver('aws', function ($app, $config) {
             return new AWSTranslator($config, $app);
+        });
+
+        Translate::pushDriver('google-translate-free', function ($app, $config) {
+            return new GoogleTranslateFreeTranslator($config, new GoogleTranslate());
         });
     }
 

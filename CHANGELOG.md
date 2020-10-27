@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Issue 10](https://github.com/tobytwigger/laravel-translate/issues/10) - Changed the _translate API to a get request for proper caching.
 - [Issue 7](https://github.com/tobytwigger/laravel-translate/issues/7) - Added supported languages key to config.
 - [Issue 15](https://github.com/tobytwigger/laravel-translate/issues/15) - Added implementation documentation
+- [Issue 6](https://github.com/tobytwigger/laravel-translate/issues/6) - Added Free Google Translate translator.
 
 ## [0.1] - (09/09/2020)
 
