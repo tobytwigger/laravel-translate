@@ -2,7 +2,9 @@
 
 namespace Twigger\Translate\Translate\Interceptors\Database;
 
+use Database\Factories\TranslationModelFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
@@ -17,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TranslationModel extends Model
 {
+    use HasFactory;
 
     /**
      * The table name. This is also set by default on construct of a model
@@ -125,5 +128,10 @@ class TranslationModel extends Model
     public function scopeTranslate(Builder $query, string $original)
     {
         return $query->where('text_original', $original);
+    }
+
+    protected static function newFactory()
+    {
+        return new TranslationModelFactory();
     }
 }
