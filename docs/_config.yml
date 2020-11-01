@@ -77,6 +77,9 @@ color_scheme: dark
 ga_tracking: G-8FNXG696PB
 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true by default)
 
+# Google Site Verification (meta tag)
+site_verification_token: "4SG_2KfCa2XVgO0fu6cjWwpp63M1in1SLQUBAXW0d3I"
+
 collections:
     # Define a collection named "docs", its documents reside in the "_docs" directory
     docs:
