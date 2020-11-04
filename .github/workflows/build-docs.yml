@@ -28,12 +28,11 @@ jobs:
         bundle install --jobs 4 --retry 3
         bundle exec jekyll build
         
-    - name: Commit rebuilt site
-      uses: EndBug/add-and-commit@v4.3.0
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
       with:
-        # Change the name and email to your name and email address
-        add: docs/_site
-        author_name: Toby Twigger
-        author_email: tobytwigger1@gmail.com
-        message: Compile documentation
-        force: true
+        commit-message: Rebuilt documentation site
+        title: Rebuilt docs
+        body: Automatic rebuild of the documentation site. As long as the status checks pass, this can usually just be merged without review.
+        author: Toby Twigger <tobytwigger1@gmail.com>
+        branch: develop
