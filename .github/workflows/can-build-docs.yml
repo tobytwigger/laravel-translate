@@ -2,6 +2,8 @@ name: Test the documentation is valid
 
 on:
   pull_request:
+    branches: 
+      - develop
   
 jobs:
   build:
