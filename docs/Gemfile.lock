@@ -261,11 +261,12 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll-sitemap
   just-the-docs
   minima
 
 RUBY VERSION
-   ruby 2.7.2p137
+   ruby 2.6.6p146
 
 BUNDLED WITH
    2.1.4
