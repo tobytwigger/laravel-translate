@@ -35,6 +35,9 @@ jobs:
         title: Rebuilt docs
         body: Automatic rebuild of the documentation site. As long as the status checks pass, this can usually just be merged without review.
         author: Toby Twigger <tobytwigger1@gmail.com>
+        committer: Toby Twigger <tobytwigger1@gmail.com>
         branch: chore/update-documentation
         base: develop
         delete-branch: true
+        assignees: tobytwigger
+        labels: documentation
