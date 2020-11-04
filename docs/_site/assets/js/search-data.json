@@ -1,0 +1,296 @@
+{"0": {
+    "doc": "Basic Usage",
+    "title": "Basic Usage",
+    "content": ". | Facade . | Target Language | Source Language | . | API . | Translating single lines . | Request | Response | . | Translating multiple lines . | Request | Response | . | Overriding the source and target language . | Request | Response | . | . | JavaScript | Blade | Helper Function | . Laravel Translate can be used with no configuration. To ensure this package can be used for any project, we provide multiple entry points including a Facade and an API. ",
+    "url": "/basic-usage",
+    "relUrl": "/basic-usage"
+  },"1": {
+    "doc": "Basic Usage",
+    "title": "Facade",
+    "content": "The easiest way to translate any text is to use the Translate facade. The following line will translate ‘A string to translate’ from English to French. $frenchString = \\Twigger\\Translate\\Translate::translate('A string to translate', 'fr', 'en'); . The translate function takes the string to translate as the first argument, the language to translate to (the target language) as the second argument and the source language as the third. There is an alternative function called translateMany, which takes an array of strings rather than a single string. This is useful for efficiently translating multiple strings at the same time. $frenchStrings = \\Twigger\\Translate\\Translate::translateMany(['A string to translate', 'A second string to translate'], 'fr', 'en'); . These functions will return the string (or an array of strings) of translated text. If a given string couldn’t be translated, null will be returned (or one of the array elements). To provide a seamless integration, you should always return the original string if a translation failed. This common pattern can be achieved using the null coalescing operator. // Single line $line = 'A string to translate'; return \\Twigger\\Translate\\Translate::translate($line, 'fr', 'en') ?? $line; // Multiple Lines $lines = ['A string to translate', 'A second string to translate']; $translatedLines = \\Twigger\\Translate\\Translate::translateMany($lines, 'fr', 'en'); // PHP 7.4 return \\array_map(fn ($string, $index) =&gt; $string ?? $lines[$index], $translatedLines, array_keys($translatedLines)); // &lt;= PHP 7.3 return \\array_map(function($string, $index) use ($lines) { return $string ?? $lines[$index]; }, $translatedLines, array_keys($translatedLines)); . Target Language . The target language will depend on your end user. They may have the language set in their browser, your app may give them language options, or you may wish to use the default Laravel locale. To simplify the detection of this language, the Laravel Translate package provides a detection facade. $targetLocale = \\Twigger\\Translate\\Detect::lang(); . The strategies used to detect the requested locale can be modified, which is described further in the configuration option section. Source Language . The source language is required, as many websites may have content written in multiple languages. If this is not the case, we recommend passing in the Laravel locale as a sensible default. \\Twigger\\Translate\\Translate::translate('A string to translate', 'fr', \\Illuminate\\Support\\Facades\\App::getLocale()); . You may then edit the locale key in your config/app.php file to define the default locale. ",
+    "url": "/basic-usage#facade",
+    "relUrl": "/basic-usage#facade"
+  },"2": {
+    "doc": "Basic Usage",
+    "title": "API",
+    "content": "The Laravel Translate package provides an API for translating any text. The endpoint is defined in the configuration file, but defaults to _translate. The source and target language are automatically detected as described above. A call to the translate API will be cached for 7 days in the browser, to load translations as quickly as possible. The following body content should be encoded to the url. If a translation failed, its respective array element or string will return null. Translating single lines . Request . GET /_translate HTTP/1.1 Accept: application/json Content-Type: application/json { \"line\": \"A line to translate\" } . Response . HTTP/1.1 200 OK Content-Type: application/json { \"translation\": \"The translated line in the detected language\" } . Translating multiple lines . Request . GET /_translate HTTP/1.1 Accept: application/json Content-Type: application/json { \"lines\": [ \"A line to translate\", \"Another line to translate\", ] } . Response . HTTP/1.1 200 OK Content-Type: application/json { \"translations\": [ \"The translated line in the detected language\", \"The second translated line in the detected language\", ] } . Overriding the source and target language . This will translate the line from english to french. Although target_lang and source_lang are not required, either or both may be given to override the default behaviour of the API. Request . GET /_translate HTTP/1.1 Accept: application/json Content-Type: application/json { \"line\": \"A line to translate\", \"target_lang\": \"fr\", \"source_lang\": \"en\" } . Response . HTTP/1.1 200 OK Content-Type: application/json { \"translation\": \"The translated line in the detected language\" } . ",
+    "url": "/basic-usage#api",
+    "relUrl": "/basic-usage#api"
+  },"3": {
+    "doc": "Basic Usage",
+    "title": "JavaScript",
+    "content": "Currently under development. Using our javascript tool, you can easily translate any text from Vue, React or just plain javascript. It helps maintain a balance between time taken to translate text and the number of API calls, by collecting translation requests and translating many in one. ",
+    "url": "/basic-usage#javascript",
+    "relUrl": "/basic-usage#javascript"
+  },"4": {
+    "doc": "Basic Usage",
+    "title": "Blade",
+    "content": "If you use the blade templating engine to define your frontend, you can make use of our blade directive to quickly translate any text. @trans('Welcome') . The target and source language will be automatically detected, using the default source language from the config and the target language using the detector, . This directive is also accessible through __t, which is shorter and cleaner to use. @__t('Welcome') . The directive will output the translated string. If the original text could not be translated, it will just be returned to ensure a user of your site sees some text. ",
+    "url": "/basic-usage#blade",
+    "relUrl": "/basic-usage#blade"
+  },"5": {
+    "doc": "Basic Usage",
+    "title": "Helper Function",
+    "content": "Rather than relying on the facade, you can easily use our helper function which uses the facade in the background. This takes the same arguments as the facade. // Translate from English to French laravelTranslate('Line to Translate', 'fr', 'en'); . The target and source language will be automatically detected if left blank, meaning you can just pass the string in . laravelTranslate('Line to Translate'); . If no arguments are given, an instance of the Translation Manager will be given. If a string is given as the first argument, a translated string is returned. If the translation failed, the original string is returned. This function is also accessible through __t, which is shorter and cleaner to use. echo __t('Welcome'); // Bienvenue echo __t('Welcome', 'not-a-language-so-fails'); // Welcome . ",
+    "url": "/basic-usage#helper-function",
+    "relUrl": "/basic-usage#helper-function"
+  },"6": {
+    "doc": "Configuration",
+    "title": "Configuration",
+    "content": "Contents . | Introduction | . ",
+    "url": "/configuration/configuration",
+    "relUrl": "/configuration/configuration"
+  },"7": {
+    "doc": "Configuration",
+    "title": "Introduction",
+    "content": "Laravel Translate strives to be as customisable as possible, so it can be used in any situation. The two main ways to customise the package are through the service provider and the configuration file. The configuration file defines sensible defaults to some required settings, including things like the name of the table to use, the API url and allowed languages. It also allows you to define new configurations, which are translators to use. You may be familiar with this concept from things like Laravel filesystems, databases and the cache. For example, in your config/filesystems.php file, there’s an array of disks that define drivers and configuration for the drivers. ",
+    "url": "/configuration/configuration#introduction",
+    "relUrl": "/configuration/configuration#introduction"
+  },"8": {
+    "doc": "Driver Configuration",
+    "title": "Configuration",
+    "content": "Contents . | Registering a new configuration | Defining configuration in the config file | Defining the configuration in the manager | . ",
+    "url": "/configuration/driver-configuration#configuration",
+    "relUrl": "/configuration/driver-configuration#configuration"
+  },"9": {
+    "doc": "Driver Configuration",
+    "title": "Registering a new configuration",
+    "content": "Laravel Translate comes with a few translation drivers you can use, and you can add your own. You may use the drivers with your own configuration. For example, the AWS driver needs a secret key and id to authenticate, whereas the null driver needs nothing. The grouping of a driver with its settings is called a configuration, and is what you’ll mainly use to interact with Laravel Translate. By default, we’ve defined a configuration per driver, but you’re very welcome to add any number of new configurations. ",
+    "url": "/configuration/driver-configuration#registering-a-new-configuration",
+    "relUrl": "/configuration/driver-configuration#registering-a-new-configuration"
+  },"10": {
+    "doc": "Driver Configuration",
+    "title": "Defining configuration in the config file",
+    "content": "In the config file, you’ll see a configurations key. Each of these has a name given by the array index, and a driver given in the configuration. [ 'configurations' =&gt; [ 'my-configuration' =&gt; [ \\Twigger\\Translate\\Translate\\TranslationManager::DRIVER_KEY =&gt; 'driver-name', 'username' =&gt; 'Some Username', 'password' =&gt; 'pw' ] ] ]; . You can now use 'my-configuration' to refer to this specific driver instance. For example, to translate text using the driver driver-name and the username Some Username: . \\Twigger\\Translate\\Translate::driver('my-configuration')-&gt;translate('Text to Translate', 'en', 'fr'); . If you omit the driver method, Translate will use the default driver. This is also defined in the config file . [ 'default' =&gt; 'my-configuration' ]; . ",
+    "url": "/configuration/driver-configuration#defining-configuration-in-the-config-file",
+    "relUrl": "/configuration/driver-configuration#defining-configuration-in-the-config-file"
+  },"11": {
+    "doc": "Driver Configuration",
+    "title": "Defining the configuration in the manager",
+    "content": "If you want to dynamically create configurations, it’s no good just using the config file. In these cases, you may add configurations and change the default translator using Translate. The following lines will add the configuration as defined in the above example. \\Twigger\\Translate\\Translate::pushConfiguration('my-configuration', 'driver-name', [ 'username' =&gt; 'Some Username', 'password' =&gt; 'pw' ]); . To change the default configuration, you can call setDefaultDriver. \\Twigger\\Translate\\Translate::setDefaultDriver('my-configuration'); . These would usually be called in the boot method of a service provider, but they may be called anywhere in your code. ",
+    "url": "/configuration/driver-configuration#defining-the-configuration-in-the-manager",
+    "relUrl": "/configuration/driver-configuration#defining-the-configuration-in-the-manager"
+  },"12": {
+    "doc": "Driver Configuration",
+    "title": "Driver Configuration",
+    "content": " ",
+    "url": "/configuration/driver-configuration",
+    "relUrl": "/configuration/driver-configuration"
+  },"13": {
+    "doc": "Configure the package behaviour",
+    "title": "Configuration",
+    "content": "Contents . | Configuration File . | Table | Supported Languages . | Support languages in config | Support languages directly | . | Detection . | Body Detection | Cookie Detection | Header Detection | . | . | Translation Configuration | . ",
+    "url": "/configuration/package-configuration#configuration",
+    "relUrl": "/configuration/package-configuration#configuration"
+  },"14": {
+    "doc": "Configure the package behaviour",
+    "title": "Configuration File",
+    "content": "This can be published using php artisan vendor:publish so you can customise the package. The options available are documented here, but translator drivers are documented in the driver configuration docs. Table . The table key defines the table to use. This must be set before the migration is run, and should not be changed once the migration has been run. It defaults to translations, which is a sensible default assuming you don’t already have a table with this name. Supported Languages . The convenience of instant translations through a translation service comes with one main downside - you’re relying on the translation service to accurately translate your website. It won’t always produce the best translation, which is why you’re able to override the translation through your lang files or the database. A happy medium is to use instant translations to initially translate the site, then reviewing the translations and changing any translations if necessary. To stop users using your website in a language which is being reviewed, you can define the languages that should be supported. Any language requested that isn’t in this array is rejected. Support languages in config . The supported_languages key in the config file contains an array of supported languages. If it’s an empty array, all languages are supported. If anything is in the array, only those languages will be supported. Support languages directly . At any point (generally in your service provider), you can call the following to support any given language(s). \\Twigger\\Translate\\Translate\\Interceptors\\SupportedLanguageInterceptor::support(['en', 'fr']); . This function can be called multiple times to support multiple languages. You can pass it a single language or multiple languages. \\Twigger\\Translate\\Translate\\Interceptors\\SupportedLanguageInterceptor::support('en'); \\Twigger\\Translate\\Translate\\Interceptors\\SupportedLanguageInterceptor::support(['en', 'fr']); . Detection . These are configuration options related to the target language detector. Most detectors have configuration to change things like keys to look for, and all of them can be turned off by making calls in your Service Provider. Body Detection . The body detection gets the target language from the request body. The key to use is defined in config (body_key). It defaults to language. If the key is not found in the request, the detector will try other strategies. If you don’t want to even check the request, you can add the following to the register function in your AppServiceProvider. \\Twigger\\Translate\\TranslationServiceProvider::withoutBodyDetector(); . Cookie Detection . The cookie detection gets the target language from a cookie. The key of the cookie to use is defined in config (cookie_key). It defaults to language. If the cookie is not present, the detector will try other strategies. If you don’t want to even check for a cookie, you can add the following to the register function in your AppServiceProvider. \\Twigger\\Translate\\TranslationServiceProvider::withoutCookieDetector(); . Header Detection . The header detection gets the target language from a header. Most modern browsers automatically set this header based on user preferences. You may set an array of allowed languages, using the allowed_languages configuration. If you want to allow any language, set this to an empty array (the default). If the header is not present, the detector falls back to the Laravel fallback language. If you don’t want to even check for a header, and so require a user to specify their language if different from the fallback, you can add the following to the register function in your AppServiceProvider. \\Twigger\\Translate\\TranslationServiceProvider::withoutHeaderDetector(); . ",
+    "url": "/configuration/package-configuration#configuration-file",
+    "relUrl": "/configuration/package-configuration#configuration-file"
+  },"15": {
+    "doc": "Configure the package behaviour",
+    "title": "Translation Configuration",
+    "content": "You may also customise how translations are processed. By default, the following methods are used when any string is translated. If one of them is able to return a translation, the rest are skipped. | Check if the cache contains the translation. This is useful for speeding up translations after an initial translation | Check if the database contains the translation. This allows you to override any translation through your website UI, to provide a convenient way to improve translations. | Check your lang files to see if the translation has been defined. Replacements aren’t supported, so you should use lang files with the original text as the key. This also is only supported if the source language is the same as the source language for your translation files. | Call the translator to get the translation value. | . Assuming a translation gets to stage 4, the other steps are able to react to and save the translation. The key will be saved in the database to make it easier to override any translations. This also means that any future calls, even if they bypass the cache, will be able to easily resolve the translation from the database rather than relying on the third party translation service. Any translation will also be saved in the cache forever, to ensure translating may happen as quickly as possible. If you want to take out any of the steps 1-3, you can call the relevant function in the register function in your AppServiceProvider . \\Twigger\\Translate\\TranslationServiceProvider::withoutCache(); // Don't use the cache \\Twigger\\Translate\\TranslationServiceProvider::withoutDatabaseOverrides(); // Don't look for translations in the database \\Twigger\\Translate\\TranslationServiceProvider::withoutLangFiles(); // Don't load any language files . ",
+    "url": "/configuration/package-configuration#translation-configuration",
+    "relUrl": "/configuration/package-configuration#translation-configuration"
+  },"16": {
+    "doc": "Configure the package behaviour",
+    "title": "Configure the package behaviour",
+    "content": " ",
+    "url": "/configuration/package-configuration",
+    "relUrl": "/configuration/package-configuration"
+  },"17": {
+    "doc": "Detector",
+    "title": "Extending",
+    "content": "Contents . | Detector Structure | Register a Strategy | . ",
+    "url": "/extending/detector#extending",
+    "relUrl": "/extending/detector#extending"
+  },"18": {
+    "doc": "Detector",
+    "title": "Detector Structure",
+    "content": "The detector allows for new methods of detecting the preferred language of the user. These methods are called a strategy, and are nothing more than a class that extends Twigger\\Translate\\Locale\\DetectionStrategy class. Only one method is required, which should try and detect a preferred language. If a language was detected, the ISO-639-1 language code should be returned. Otherwise, return null. If the method has any dependencies, such as the request or a third party client, these can be typehinted on the constructor. class MyDetector extends \\Twigger\\Translate\\Locale\\DetectionStrategy { protected $request; public function __construct(\\Illuminate\\Http\\Request $request) { $this-&gt;request = $request; } protected function getCurrentLocale() : ?string{ // Use the request to detect the language. Method could return the language code or null. return $request-&gt;methodToGetLanguage(); } } . ",
+    "url": "/extending/detector#detector-structure",
+    "relUrl": "/extending/detector#detector-structure"
+  },"19": {
+    "doc": "Detector",
+    "title": "Register a Strategy",
+    "content": "Detection strategies must be registered with the \\Twigger\\Translate\\Locale\\DetectionStrategyStore, usually in your service provider boot method. You can register a strategy to run first, last or in the middle, giving you control over the importance of the detection strategies. Do this using the registerFirst(), registerLast() and register() passing in the class name. // app/Providers/AppServiceProvider.php public function boot() { $this-&gt;app-&gt;make(\\Twigger\\Translate\\Locale\\DetectionStrategyStore::class) -&gt;registerFirst(\\App\\Locale\\MyLocaleDetection::class); } . ",
+    "url": "/extending/detector#register-a-strategy",
+    "relUrl": "/extending/detector#register-a-strategy"
+  },"20": {
+    "doc": "Detector",
+    "title": "Detector",
+    "content": " ",
+    "url": "/extending/detector",
+    "relUrl": "/extending/detector"
+  },"21": {
+    "doc": "Extending",
+    "title": "Extending",
+    "content": "Contents . | Introduction | Extending the Detector | Extending the Translator | . ",
+    "url": "/extending/index",
+    "relUrl": "/extending/index"
+  },"22": {
+    "doc": "Extending",
+    "title": "Introduction",
+    "content": "Laravel Translate has been designed with extensibility as a priority - we make sure the package works for you rather than you working for the package! There are three main extensions you can build for Laravel Translate, which are documented below. If you do build any extensions, it’d be very much appreciated if you could open a pull request with your changes so everyone can benefit in the spirit of Open Source software. ",
+    "url": "/extending/index#introduction",
+    "relUrl": "/extending/index#introduction"
+  },"23": {
+    "doc": "Extending",
+    "title": "Extending the Detector",
+    "content": "The detector has several methods for detecting the target language. For example, it checks in the request to see if a language has been given. If not, it’ll check to see if a cookie exists that contains the language. Failing that, it’ll use the browser preferences. Laravel Translate allows you to add your own methods. For example, maybe a user specifies their default language which is saved in the database. Or maybe it’s in the url of the website (such as www.example.com/fr). No matter what, you can create your own method for detecting the target language. ",
+    "url": "/extending/index#extending-the-detector",
+    "relUrl": "/extending/index#extending-the-detector"
+  },"24": {
+    "doc": "Extending",
+    "title": "Extending the Translator",
+    "content": "The translator provides two interfaces - a translator and an interceptor. Although these are very similar, and in fact an interceptor is just a special form of translator, they are used for very different reasons. A translator should be able to translate almost any text. An interceptor only has a certain text that is able to translate, and defaults to the translator if the interceptor is not able to translate the text. For example, lang files are interceptors as you have to define each translation so it’s likely any given text won’t have a translation. Google translate is a translator, since it should be able to handle most strings without first needing to define them. If you’re unsure if you need to create an interceptor or a translator, ask yourself if it’s likely the method won’t be able to translate any random string. If this is the case, you want an interceptor. ",
+    "url": "/extending/index#extending-the-translator",
+    "relUrl": "/extending/index#extending-the-translator"
+  },"25": {
+    "doc": "Interceptor",
+    "title": "Extending",
+    "content": "Contents . | Interceptor Structure | Register an Interceptor | . ",
+    "url": "/extending/interceptor#extending",
+    "relUrl": "/extending/interceptor#extending"
+  },"26": {
+    "doc": "Interceptor",
+    "title": "Interceptor Structure",
+    "content": "An interceptor is a class that extends Twigger\\Translate\\Translate\\TranslationInterceptor. It can be thought of as middleware - the translation interceptor is used to get a value for any translation. If no value exists however, the value is translated and the translation saved using the same interceptor. This allows the interceptor the chance to handle a future translation of the same text. It therefore must implement three functions: . | canIntercept($line, $to, $from) - Determine if the interceptor has a value for a translation | get($line, $to, $from) - Get the value of an interception | save($line, $to, $from) - Save the value of an interception | . Although this is enough, there are cases where you can optimise your interceptor, especially if the interceptor uses external resources like a database. You may define the same three methods which handle many translations at a time (e.g. when translateMany is used). The only difference is getMany, canInterceptMany and saveMany . It therefore must implement three functions: . | canInterceptMany($lines, $to, $from) - Determine if the interceptor has a value for a translation. Returns an array of booleans to mark whether the corresponding line can be intercepted. | getMany($lines, $to, $from) - Get the value of many interceptions. $lines will be an array of lines that can be intercepted. | saveMany($lines, $to, $from) - Save the value of many interceptions. Only translations not intercepted will be passed to this, even if they haven’t been changed. | . As before, dependencies can be typehinted to the constructor . class CrowdInInterceptor extends Twigger\\Translate\\Translate\\TranslationInterceptor { protected $crowdIn; public function __construct(array $config,\\Twigger\\Translate\\Translate\\Translator $translator, \\App\\Lang\\CrowdInService $crowdIn) { parent::__construct($config,$translator); $this-&gt;crowdIn = $crowdIn; } protected function canIntercept(string $line, string $to, string $from): bool { return $this-&gt;crowdIn-&gt;has($line, $to, $from); } protected function get(string $line, string $to, string $from): string { return $this-&gt;crowdIn-&gt;get($line, $to, $from); } protected function save(string $line, string $to, string $from, string $translation): void { $this-&gt;crowdIn-&gt;save($line, $to, $from, $translation); } protected function canInterceptMany(array $lines, string $to, string $from): bool { // This method is entirely optional. $result = []; foreach($lines as $index =&gt; $line) { $result[$index] = $this-&gt;crowdIn-&gt;has($line, $to, $from); } return $result; } } . ",
+    "url": "/extending/interceptor#interceptor-structure",
+    "relUrl": "/extending/interceptor#interceptor-structure"
+  },"27": {
+    "doc": "Interceptor",
+    "title": "Register an Interceptor",
+    "content": "To register an interceptor, you just need to call the intercept function on the TranslationFactory in your service provider. public function boot() { $this-&gt;app-&gt;make(\\Twigger\\Translate\\Translate\\TranslationFactory::class) -&gt;intercept(\\App\\Interceptor\\CrowdInInterceptor::class); } . ",
+    "url": "/extending/interceptor#register-an-interceptor",
+    "relUrl": "/extending/interceptor#register-an-interceptor"
+  },"28": {
+    "doc": "Interceptor",
+    "title": "Interceptor",
+    "content": " ",
+    "url": "/extending/interceptor",
+    "relUrl": "/extending/interceptor"
+  },"29": {
+    "doc": "Translator",
+    "title": "Extending",
+    "content": "Contents . | Translator Structure | Register a Translator | . ",
+    "url": "/extending/translator#extending",
+    "relUrl": "/extending/translator#extending"
+  },"30": {
+    "doc": "Translator",
+    "title": "Translator Structure",
+    "content": "The final major extension is a translator, which usually uses a third party translation service. It extends the \\Twigger\\Translate\\Translate\\Translator class, and defines methods to translate a line to another language. You may also override the translateMany method, to optimise translating multiple strings at a time. This is optional though. To access any configuration, such as keys or endpoints, you can use the getConfig function. class GoogleTranslator extends \\Twigger\\Translate\\Translate\\Translator { protected $google; public function __construct(array $config = [], \\App\\Services\\GoogleTranslate $google) { parent::__construct($config); $this-&gt;google = $google; } public function translate(string $line, string $to, string $from): ?string { $password = $this-&gt;getConfig('password', 'default-password'); return $this-&gt;google-&gt;translate($line, $to, $from, $password); } public function translateMany(array $lines, string $to, string $from): array { return $this-&gt;google-&gt;translateMany($lines, $to, $from); } } . ",
+    "url": "/extending/translator#translator-structure",
+    "relUrl": "/extending/translator#translator-structure"
+  },"31": {
+    "doc": "Translator",
+    "title": "Register a Translator",
+    "content": "Having created a translator, you need to register it as a driver. This way, it can be used in configurations. You’ll also need to write a callback that will return an instance of the translator, with dependencies passed in. \\Twigger\\Translate\\Translate::pushDriver('google', function ($app, $config) { return new GoogleTranslator($config, $app-&gt;make(\\App\\Services\\GoogleTranslate::class)); }); . ",
+    "url": "/extending/translator#register-a-translator",
+    "relUrl": "/extending/translator#register-a-translator"
+  },"32": {
+    "doc": "Translator",
+    "title": "Translator",
+    "content": " ",
+    "url": "/extending/translator",
+    "relUrl": "/extending/translator"
+  },"33": {
+    "doc": "Introduction",
+    "title": "Laravel Translate",
+    "content": "Contents . | Introduction . | Why Laravel Translate | . | Installation | . ",
+    "url": "/index#laravel-translate",
+    "relUrl": "/index#laravel-translate"
+  },"34": {
+    "doc": "Introduction",
+    "title": "Introduction",
+    "content": "Laravel Translate provides instant free translations using Google, AWS, Bing or any other translation service. It also allows translations to be set in language files and the database to provide a truly flexible translation tool. | Translate any text instantly using a multitude of translation services, without tying yourself to a specific service. | Commit specific translations to version control. | UI to edit translations. | Easily extensible. | Fully tested. | . Why Laravel Translate . There are many translation packages for Laravel, so what does this package offer that others don’t? . Put simply, flexibility. Laravel Translate has no limits on ways to manage translations, from a simple lang file to an automated translation file, database overrides and caching. If you ever decide to change the way you handle translations, Laravel Translate makes that a breeze. In one line, you can switch translation services, turn on database upgrades or turn off translations entirely! . ",
+    "url": "/index",
+    "relUrl": "/index"
+  },"35": {
+    "doc": "Introduction",
+    "title": "Installation",
+    "content": "All you need to do to use this project is pull it into an existing Laravel app using composer. composer require twigger/laravel-translate . You can publish the configuration file by running . php artisan vendor:publish --provider=\"Twigger\\Translate\\TranslationServiceProvider\" . ",
+    "url": "/index#installation",
+    "relUrl": "/index#installation"
+  },"36": {
+    "doc": "Translators",
+    "title": "Laravel Translate",
+    "content": "Contents . | Using translators | . ",
+    "url": "/translators/index#laravel-translate",
+    "relUrl": "/translators/index#laravel-translate"
+  },"37": {
+    "doc": "Translators",
+    "title": "Using translators",
+    "content": "Translators are services which take in a line of text and return a translated string in the requested language. They usually use third party translation services such as google translate to provide these translations. You can use a translator to provide runtime translations by referring to the driver name (translations can also be called drivers, since they allow us to use third party software). In the same configuration definition, you can provide settings to the translator such as access keys or urls. This is furthered in the driver configuration section. We provide a set of official translators which are installed by default, and third party translators we know of created by the community. If you’ve created a translator you think others may be interested in, let us know! . ",
+    "url": "/translators/index#using-translators",
+    "relUrl": "/translators/index#using-translators"
+  },"38": {
+    "doc": "Translators",
+    "title": "Translators",
+    "content": " ",
+    "url": "/translators/index",
+    "relUrl": "/translators/index"
+  },"39": {
+    "doc": "Official Translators",
+    "title": "Laravel Translate",
+    "content": "Official Translators . | Null Translator . | Prerequisites | Usage | Example | . | AWS Translator . | Prerequisites | Usage | Example | . | Google Translate - Free . | Prerequisites | Usage | Example | . | Stack Driver . | Prerequisites | Usage | Example | . | . ",
+    "url": "/translators/official#laravel-translate",
+    "relUrl": "/translators/official#laravel-translate"
+  },"40": {
+    "doc": "Official Translators",
+    "title": "Null Translator",
+    "content": "Dummy translator that always returns nothing . Prerequisites . This driver doesn’t need you to install anything in order to use it. Usage . | Driver Key: null | . This translator needs no configuration. Example . [ \\Twigger\\Translate\\Translate\\TranslationManager::DRIVER_KEY =&gt; 'null' ]; . ",
+    "url": "/translators/official#null-translator",
+    "relUrl": "/translators/official#null-translator"
+  },"41": {
+    "doc": "Official Translators",
+    "title": "AWS Translator",
+    "content": "Driver for the AWS Translate Service: https://aws.amazon.com/translate/ . Prerequisites . This translator makes use of the AWS API. Therefore, you will need to require the aws sdk as a dependency. composer require aws/aws-sdk-php . You also need an account on AWS, and have a programmatic user with access to Laravel Translate. Usage . | Driver Key: aws | . The translator requires AWS access. These are usually already defined in Laravel if you’re using the s3 filesystem or sqs queue service. | Version: The API version to use. Should usually be ‘latest’. | Region: The AWS region to use (e.g. us-west-1). | Key: The AWS key. | Secret: The AWS secret. | Log Errors: Should errors be logged if AWS throws an error. | . Example . [ \\Twigger\\Translate\\Translate\\TranslationManager::DRIVER_KEY =&gt; 'aws', 'version' =&gt; 'latest', 'region' =&gt; env('AWS_DEFAULT_REGION', 'eu-west-2'), 'key' =&gt; env('AWS_ACCESS_KEY_ID'), 'secret' =&gt; env('AWS_SECRET_ACCESS_KEY'), 'log_errors' =&gt; env('AWS_DEBUG_TRANSLATIONS', true) ]; . ",
+    "url": "/translators/official#aws-translator",
+    "relUrl": "/translators/official#aws-translator"
+  },"42": {
+    "doc": "Official Translators",
+    "title": "Google Translate - Free",
+    "content": "Driver for the free Google Translate API. It is not recommended to use this driver in production for a critical site, since this API is internal to Google Translate and so may be changed. Prerequisites . This translator makes use of the fantastic google translator package from Stichoza. Therefore, you will need to require the aws sdk as a dependency. composer require stichoza/google-translate-php . Usage . | Driver Key: google-translate-free | . Configuration: . | Log Errors: Should errors be logged if the translation throws an error. | . Example . [ \\Twigger\\Translate\\Translate\\TranslationManager::DRIVER_KEY =&gt; 'google-translate-free', 'log_errors' =&gt; env('AWS_DEBUG_TRANSLATIONS', true) ]; . ",
+    "url": "/translators/official#google-translate---free",
+    "relUrl": "/translators/official#google-translate---free"
+  },"43": {
+    "doc": "Official Translators",
+    "title": "Stack Driver",
+    "content": "Allows many translators to be called in a chain to get a translation . Whilst not providing a translation itself, the stack driver takes a set of defined translator configurations. It calls each one in turn - if a result is given it is returned. If the first translator has a null result (the translation failed), it’ll then call the second translator and so on. This can be a very useful driver with interesting results. For example, we could use the free google translator as the main translator to save costs. A downside to this is this translator is often blocked by google for a few hours, meaning translations can’t occur. By stacking the AWS translator (paid service), if the google translator fails the AWS translator picks up the slack and continues ensuring translations can happen. Once the Google translator starts working again, it takes over to save on costs. Prerequisites . There are no prerequisites for the stack driver. Make sure you’ve defined configurations to use in the stack driver though. Usage . | Driver Key: stack | . Configuration: . | Translators: An array of configuration names of other translators to use. | . Example . [ \\Twigger\\Translate\\Translate\\TranslationManager::DRIVER_KEY =&gt; 'stack', 'translators' =&gt; [ 'aws-free-configuration-1', 'aws-configuration-2', 'deepl', 'google-translate-free' ] ]; . ",
+    "url": "/translators/official#stack-driver",
+    "relUrl": "/translators/official#stack-driver"
+  },"44": {
+    "doc": "Official Translators",
+    "title": "Official Translators",
+    "content": " ",
+    "url": "/translators/official",
+    "relUrl": "/translators/official"
+  },"45": {
+    "doc": "Third Party Translators",
+    "title": "Laravel Translate",
+    "content": "Contents . We don’t yet have any community translations submitted. If you’ve created a translator you think others may be interested in, let us know! . ",
+    "url": "/translators/third-party#laravel-translate",
+    "relUrl": "/translators/third-party#laravel-translate"
+  },"46": {
+    "doc": "Third Party Translators",
+    "title": "Third Party Translators",
+    "content": " ",
+    "url": "/translators/third-party",
+    "relUrl": "/translators/third-party"
+  },"47": {
+    "doc": "UI Documentation",
+    "title": "UI Documentation",
+    "content": ". | Introduction | . ",
+    "url": "/ui-documentation",
+    "relUrl": "/ui-documentation"
+  },"48": {
+    "doc": "UI Documentation",
+    "title": "Introduction",
+    "content": "This is a work in progress . Frontend page to manage and update translations in the database, allowing for customising individual translations. ",
+    "url": "/ui-documentation#introduction",
+    "relUrl": "/ui-documentation#introduction"
+  }
+}
