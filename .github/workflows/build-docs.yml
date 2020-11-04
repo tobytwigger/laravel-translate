@@ -1,9 +1,10 @@
-name: Build docs and open a pull request
+name: Build docs and commit to build branch
 
 on:
   push:
     branches: 
       - develop
+      - master
 
 jobs:
   build:
@@ -28,16 +29,11 @@ jobs:
         bundle install --jobs 4 --retry 3
         bundle exec jekyll build
         
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+    - name: Commit assets
+      uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit-message: Rebuilt documentation site
-        title: Rebuilt docs
-        body: Automatic rebuild of the documentation site. As long as the status checks pass, this can usually just be merged without review.
-        author: Toby Twigger <tobytwigger1@gmail.com>
-        committer: Toby Twigger <tobytwigger1@gmail.com>
-        branch: chore/update-documentation
-        base: develop
-        delete-branch: true
-        assignees: tobytwigger
-        labels: documentation
+        push_options: '--force'
+        commit_user_name: Toby Twigger
+        commit_user_email: tobytwigger1@gmail.com
+        commit_message: Build documentation
+        branch: build/documentation
