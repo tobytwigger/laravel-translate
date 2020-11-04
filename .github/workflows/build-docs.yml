@@ -37,4 +37,5 @@ jobs:
         author_email: tobytwigger1@gmail.com
         message: Build documentation
         branch: build/documentation
+        pull_strategy: --no-ff
         
