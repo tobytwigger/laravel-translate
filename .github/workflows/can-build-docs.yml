@@ -1,4 +1,4 @@
-name: Build Docs
+name: Test the documentation is valid
 
 on:
   pull_request:
