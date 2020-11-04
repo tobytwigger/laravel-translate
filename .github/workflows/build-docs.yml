@@ -21,6 +21,7 @@ jobs:
         ruby-version: 2.6
 
     - name: Build Docs
+      working-directory: ./docs
       run: |
         sudo apt-get -yqq install libpq-dev
         gem install bundler
