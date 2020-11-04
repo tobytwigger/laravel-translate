@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - develop
+      - master
 
 jobs:
   build:
@@ -29,13 +30,10 @@ jobs:
         bundle exec jekyll build
         
     - name: Commit assets
-      uses: EndBug/add-and-commit@v5
+      uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        # Change the name and email to your name and email address
-        add: docs/_site
-        author_name: Toby Twigger
-        author_email: tobytwigger1@gmail.com
-        message: Build documentation
+        push_options: '--force'
+        commit_user_name: Toby Twigger
+        commit_user_email: tobytwigger1@gmail.com
+        commit_message: Build documentation
         branch: build/documentation
-        pull_strategy: --no-ff
-        
