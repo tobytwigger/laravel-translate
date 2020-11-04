@@ -28,16 +28,13 @@ jobs:
         bundle install --jobs 4 --retry 3
         bundle exec jekyll build
         
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+    - name: Commit assets
+      uses: EndBug/add-and-commit@v4.3.0
       with:
-        commit-message: Rebuilt documentation site
-        title: Rebuilt docs
-        body: Automatic rebuild of the documentation site. As long as the status checks pass, this can usually just be merged without review.
-        author: Toby Twigger <tobytwigger1@gmail.com>
-        committer: Toby Twigger <tobytwigger1@gmail.com>
-        branch: chore/update-documentation
-        base: develop
-        delete-branch: true
-        assignees: tobytwigger
-        labels: documentation
+        # Change the name and email to your name and email address
+        add: public/modules
+        author_name: Toby Twigger
+        author_email: tobytwigger1@gmail.com
+        message: Compile assets for production
+        force: true
+        
