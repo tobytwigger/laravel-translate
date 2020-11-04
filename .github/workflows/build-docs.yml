@@ -1,4 +1,4 @@
-name: Build docs and commit to gh pages
+name: Build docs and commit to build branch
 
 on:
   push:
@@ -37,5 +37,5 @@ jobs:
         author_email: tobytwigger1@gmail.com
         message: Build documentation
         force: true
-        branch: documentation
+        branch: build/documentation
         
