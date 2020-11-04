@@ -1,0 +1,36 @@
+name: Build Docs
+
+on:
+  push:
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout package
+
+    - name: Install Ruby
+      id: build-docs
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+
+    - name: Build Docs
+      run: |
+        sudo apt-get -yqq install libpq-dev
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        bundle exec build jekyll
+        
+    -   name: Commit rebuilt site
+        uses: EndBug/add-and-commit@v4.3.0
+        with:
+            # Change the name and email to your name and email address
+            add: docs/_site
+            author_name: Toby Twigger
+            author_email: tobytwigger1@gmail.com
+            message: Compile documentation
+            force: true
