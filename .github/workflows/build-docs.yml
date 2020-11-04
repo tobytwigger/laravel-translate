@@ -36,6 +36,5 @@ jobs:
         author_name: Toby Twigger
         author_email: tobytwigger1@gmail.com
         message: Build documentation
-        force: true
         branch: build/documentation
         
