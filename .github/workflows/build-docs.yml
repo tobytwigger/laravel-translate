@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Checkout package
       uses: actions/checkout@v2
+      with:
+        ref: 'build/documentation'
 
     - name: Install Ruby
       id: build-docs
@@ -21,19 +23,30 @@ jobs:
       with:
         ruby-version: 2.6
 
+    - name: Update build/documentation with changes from develop
+      uses: devmasx/merge-branch@v1.3.1
+      with:
+        type: now
+        from_branch: develop
+        target_branch: build/documentation
+        github_token: ${{ github.token }}
+
     - name: Build Docs
       working-directory: ./docs
       run: |
         sudo apt-get -yqq install libpq-dev
         gem install bundler
         bundle install --jobs 4 --retry 3
-        bundle exec jekyll build
-        
-    - name: Commit assets
-      uses: stefanzweifel/git-auto-commit-action@v4
+        bundle exec jekyll build        
+
+    - name: 'Commit build artifacts to branch'
+      uses: EndBug/add-and-commit@v5
       with:
-        push_options: '--force'
-        commit_user_name: Toby Twigger
-        commit_user_email: tobytwigger1@gmail.com
-        commit_message: Build documentation
+        add: 'docs/_site'
+        author_name: Toby Twigger
+        author_email: tobytwigger1@gmail.com
         branch: build/documentation
+        message: 'Build site documentation'
+        pull_strategy: '--no-ff'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
