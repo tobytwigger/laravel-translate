@@ -47,3 +47,17 @@ jobs:
         commit_user_email: tobytwigger1@gmail.com
         commit_message: Build documentation
         branch: build/documentation
+        
+        
+
+    - name: 'Commit build artifacts to branch'
+      uses: EndBug/add-and-commit@v5
+      with:
+        add: 'docs/_site'
+        author_name: Toby Twigger
+        author_email: tobytwigger1@gmail.com
+        branch: build/documentation
+        message: 'Build site documentation'
+        pull_strategy: '--no-ff'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
