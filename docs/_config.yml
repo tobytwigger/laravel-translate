@@ -103,3 +103,6 @@ just_the_docs:
 
 # Build settings
 remote_theme: pmarsceill/just-the-docs
+
+plugins:
+    - jekyll-sitemap
