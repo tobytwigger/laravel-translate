@@ -14,12 +14,22 @@ jobs:
     steps:
     - name: Checkout package
       uses: actions/checkout@v2
+      with:
+        ref: 'build/documentation'
 
     - name: Install Ruby
       id: build-docs
       uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6
+
+    - name: Update build/documentation with changes from develop
+      uses: devmasx/merge-branch@v1.3.1
+      with:
+        type: now
+        from_branch: develop
+        target_branch: build/documentation
+        github_token: ${{ github.token }}
 
     - name: Build Docs
       working-directory: ./docs
