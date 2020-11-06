@@ -153,7 +153,8 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DetectionStrategyStore::class);
         $this->app->singleton(TranslationFactory::class);
-        $this->app->singleton('laravel-translate', function ($app) {
+        $this->app->alias(TranslationManager::class, 'laravel-translate');
+        $this->app->singleton(TranslationManager::class, function ($app) {
             return new TranslationManager($app, $app->make(TranslationFactory::class));
         });
     }
