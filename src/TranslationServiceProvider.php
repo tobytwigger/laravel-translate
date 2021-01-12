@@ -17,6 +17,7 @@ use Twigger\Translate\Translate\Handlers\GoogleTranslateFreeTranslator;
 use Twigger\Translate\Translate\Handlers\NullTranslator;
 use Twigger\Translate\Translate\Handlers\StackTranslator;
 use Twigger\Translate\Translate\Interceptors\CacheInterceptor;
+use Twigger\Translate\Translate\Interceptors\Database\TranslationModel;
 use Twigger\Translate\Translate\Interceptors\DatabaseInterceptor;
 use Twigger\Translate\Translate\Interceptors\LangFileInterceptor;
 use Twigger\Translate\Translate\Interceptors\SameLanguageInterceptor;
@@ -152,7 +153,8 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DetectionStrategyStore::class);
         $this->app->singleton(TranslationFactory::class);
-        $this->app->singleton('laravel-translate', function ($app) {
+        $this->app->alias(TranslationManager::class, 'laravel-translate');
+        $this->app->singleton(TranslationManager::class, function ($app) {
             return new TranslationManager($app, $app->make(TranslationFactory::class));
         });
     }
@@ -179,7 +181,14 @@ class TranslationServiceProvider extends ServiceProvider
 
         Route::middleware('cache.headers:public;max_age=604800;etag')
             ->get(config('laravel-translate.translate_api_url'), [TranslationController::class, 'translate'])
-            ->name('translator.translate');
+            ->name('translate');
+
+        Route::prefix(config('laravel-translate.ui.url'))
+            ->group(__DIR__ . '/../routes/translation-ui.php');
+
+        Route::bind('database_translation', function($id) {
+            return TranslationModel::findOrFail($id);
+        });
 
     }
 
