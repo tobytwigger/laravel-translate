@@ -18,9 +18,13 @@ class StackTranslator extends Translator
      */
     private $translationManager;
 
-    public function __construct(array $config = [], TranslationManager $translationManager)
+    public function __construct(array $config = [], TranslationManager $translationManager = null)
     {
         parent::__construct($config);
+        if($translationManager === null) {
+            throw new \Exception('The translation manager must be passed to the stack handler');
+        }
+
         $this->translationManager = $translationManager;
     }
 
