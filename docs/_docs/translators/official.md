@@ -87,7 +87,7 @@ It is not recommended to use this driver in production for a critical site, sinc
 
 ### Prerequisites
 
-This translator makes use of the fantastic [google translator package](https://github.com/Stichoza/google-translate-php) from [Stichoza](https://github.com/Stichoza). Therefore, you will need to require the aws sdk as a dependency.
+This translator makes use of the fantastic [google translator package](https://github.com/Stichoza/google-translate-php) from [Stichoza](https://github.com/Stichoza). Therefore, you will need to require this as a dependency.
 
 ```console
     composer require stichoza/google-translate-php
@@ -105,6 +105,41 @@ Configuration:
 [
     \Twigger\Translate\Translate\TranslationManager::DRIVER_KEY => 'google-translate-free',
     'log_errors' => env('AWS_DEBUG_TRANSLATIONS', true)
+];
+```
+
+---
+
+## DeepL
+
+> Driver for the DeepL Translation Service (https://www.deepl.com)
+
+### Prerequisites
+
+This translator makes use of a [DeepL API library](https://github.com/Baby-Markt/deepl-php-lib) from [BabyMarkt](https://www.babymarkt.de/). Therefore, you will need to require the library as a dependency.
+
+```console
+    composer require babymarkt/deepl-php-lib
+```
+
+### Usage
+- Driver Key: ```deepl```
+
+Configuration:
+- Log Errors: Should errors be logged if the translation throws an error.
+- Auth Key: The authentication key given to you by DeepL. Set by **DEEPL_AUTH_KEY** in your `.env` file.
+- API Version: The version of API to use. Defaults to 2.
+- Host: The host to use. Defaults to `api.deepl.com`
+
+### Example
+
+```php
+[
+    \Twigger\Translate\Translate\TranslationManager::DRIVER_KEY => 'deepl',
+    'auth_key' => env('DEEPL_AUTH_KEY'),
+    'api_version' => 2,
+    'host' => 'api.deepl.com',
+    'log_errors' => true
 ];
 ```
 
