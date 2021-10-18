@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Error thrown with PHP 8 due to an optional parameter coming before a required one.
 
 ## [v0.2] - (12/01/2021)
 
