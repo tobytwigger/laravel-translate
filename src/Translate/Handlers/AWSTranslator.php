@@ -30,9 +30,12 @@ class AWSTranslator extends Translator
      * @param array $config
      * @param Container $container
      */
-    public function __construct(array $config = [], Container $container)
+    public function __construct(array $config = [], Container $container = null)
     {
         parent::__construct($config);
+        if($container === null) {
+            throw new \Exception('The container instance must be passed to AWS handler');
+        }
         $this->container = $container;
     }
 

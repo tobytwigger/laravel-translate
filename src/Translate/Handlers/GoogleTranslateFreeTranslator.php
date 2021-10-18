@@ -18,9 +18,12 @@ class GoogleTranslateFreeTranslator extends Translator
      * @param array $config
      * @param GoogleTranslate $googleTranslate
      */
-    public function __construct(array $config = [], GoogleTranslate $googleTranslate)
+    public function __construct(array $config = [], GoogleTranslate $googleTranslate = null)
     {
         parent::__construct($config);
+        if($googleTranslate === null) {
+            throw new \Exception('The google translate instance must be passed to the google translate handler');
+        }
         $this->googleTranslate = $googleTranslate;
     }
 
