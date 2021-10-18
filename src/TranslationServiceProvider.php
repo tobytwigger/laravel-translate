@@ -292,7 +292,7 @@ class TranslationServiceProvider extends ServiceProvider
         });
 
         Translate::pushDriver('deepl', function ($app, $config) {
-            return new DeepLTranslator($config, $app);
+            return new DeepLTranslator($config);
         });
 
         Translate::pushDriver('stack', function ($app, $config) {

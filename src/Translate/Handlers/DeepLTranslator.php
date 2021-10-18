@@ -4,39 +4,25 @@ namespace Twigger\Translate\Translate\Handlers;
 
 use BabyMarkt\DeepL\DeepL;
 use BabyMarkt\DeepL\DeepLException;
-use Exception;
-use Illuminate\Contracts\Container\Container;
 use Twigger\Translate\Translate\Translator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Use the AWS Translate service
+ * Use the DeepL service
  *
- * https://aws.amazon.com/translate/
  */
 class DeepLTranslator extends Translator
 {
 
     /**
-     * The container to resolve a client from
-     *
-     * @var Container
+     * @var DeepL|null
      */
-    private $container;
+    private $deepL;
 
-    /**
-     * AWSTranslator constructor.
-     * @param array $config
-     * @param Container $container
-     */
-    public function __construct(array $config = [], Container $container = null)
+    public function __construct(array $config = [], DeepL $deepL = null)
     {
         parent::__construct($config);
-        if ($container === null) {
-            throw new Exception('The container instance must be passed to DeePL handler');
-        }
-        $this->container = $container;
+        $this->deepL = $deepL;
     }
 
     /**
@@ -47,7 +33,7 @@ class DeepLTranslator extends Translator
         try {
             return $this->newDeepL()->translate($line, $from, $to)[0]['text'];
         } catch (DeepLException $exception) {
-            if ($this->getConfig('log_errors', false)) {
+            if ($this->getConfig('log_errors', true)) {
                 Log::warning($exception->getMessage());
             }
         }
@@ -61,7 +47,7 @@ class DeepLTranslator extends Translator
      */
     private function newDeepL(): DeepL
     {
-        return new DeepL(
+        return $this->deepL ?? new DeepL(
             $this->getConfig('auth_key'),
             $this->getConfig('api_version'),
             $this->getConfig('host'));
