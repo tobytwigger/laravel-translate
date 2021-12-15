@@ -49,7 +49,7 @@ You can now use ```'my-configuration'``` to refer to this specific driver instan
 \Twigger\Translate\Translate::driver('my-configuration')->translate('Text to Translate', 'en', 'fr');
 ```
 
-If you omit the driver method, ```Translate``` will use the default driver. This is also defined in the config file
+If you omit the driver method, ```Translate``` will use the default driver. This is also defined in the config file.
 
 ```php
 [
