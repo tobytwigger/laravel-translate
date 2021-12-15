@@ -23,7 +23,7 @@ parent: Configuration
 
 ## Configuration File
 
-This can be published using ```php artisan vendor:publish``` so you can customise the package. The options available are documented here, but translator drivers are documented in the [driver configuration]({{ site.baseurl }}{% link _docs/configuration/driver-configuration.md %}#registering-a-new-configuration) docs.
+This can be published using ```php artisan vendor:publish``` so you can customize the package. The options available are documented here, but translator drivers are documented in the [driver configuration]({{ site.baseurl }}{% link _docs/configuration/driver-configuration.md %}#registering-a-new-configuration) docs.
 
 ### Table
 
@@ -94,7 +94,7 @@ If the header is not present, the detector falls back to the Laravel fallback la
 
 ## Translation Configuration
 
-You may also customise how translations are processed. By default, the following methods are used when any string is translated. If one of them is able to return a translation, the rest are skipped.
+You may also customize how translations are processed. By default, the following methods are used when any string is translated. If one of them is able to return a translation, the rest are skipped.
 
 1. Check if the cache contains the translation. This is useful for speeding up translations after an initial translation
 2. Check if the database contains the translation. This allows you to override any translation through your website UI, to provide a convenient way to improve translations.

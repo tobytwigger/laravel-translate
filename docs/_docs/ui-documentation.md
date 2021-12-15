@@ -22,4 +22,4 @@ nav_order: 3
 
 This is a work in progress
 
-Frontend page to manage and update translations in the database, allowing for customising individual translations.
+Frontend page to manage and update translations in the database, allowing for customizing individual translations.
