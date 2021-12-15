@@ -36,7 +36,7 @@ It therefore must implement three functions:
 - ```getMany($lines, $to, $from)``` - Get the value of many interceptions. ```$lines``` will be an array of lines that can be intercepted.
 - ```saveMany($lines, $to, $from)``` - Save the value of many interceptions. Only translations not intercepted will be passed to this, even if they haven't been changed.
 
-As before, dependencies can be typehinted to the constructor
+As before, dependencies can be typehinted to the constructor.
 
 ```php
 class CrowdInInterceptor extends Twigger\Translate\Translate\TranslationInterceptor
