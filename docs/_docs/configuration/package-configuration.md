@@ -96,7 +96,7 @@ If the header is not present, the detector falls back to the Laravel fallback la
 
 You may also customise how translations are processed. By default, the following methods are used when any string is translated. If one of them is able to return a translation, the rest are skipped.
 
-1. Check if the cache contains the translation. This is useful for speeding up translations after an initial translation
+1. Check if the cache contains the translation. This is useful for speeding up translations after an initial translation.
 2. Check if the database contains the translation. This allows you to override any translation through your website UI, to provide a convenient way to improve translations.
 3. Check your lang files to see if the translation has been defined. Replacements aren't supported, so you should use lang files with the original text as the key. This also is only supported if the source language is the same as the source language for your translation files.
 4. Call the translator to get the translation value.
