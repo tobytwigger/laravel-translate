@@ -40,11 +40,13 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "orchestra/testbench": "^6.2",
         "aws/aws-sdk-php": "^3.158",
-        "stichoza/google-translate-php":  "^4.1.0"
+        "stichoza/google-translate-php":  "^4.1.0",
+        "babymarkt/deepl-php-lib": "^3.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Needed for the AWS Translator",
-        "stichoza/google-translate-php": "Needed for the free Google Translate API"
+        "stichoza/google-translate-php": "Needed for the free Google Translate API",
+        "babymarkt/deepl-php-lib": "Needed for using the DeepL Translator"
     },
     "autoload": {
         "psr-4": {

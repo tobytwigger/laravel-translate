@@ -9,6 +9,8 @@ return [
      * Possible options may include
      * - null: Don't translate any text automatically
      * - aws: Use the AWS Translate service
+     * - google-translate-free: Use the free Google Translate service (limited)
+     * - deepl: Use DeepL
      */
     'default' => 'null',
 
@@ -33,6 +35,13 @@ return [
         ],
         'google-translate-free' => [
             TranslationManager::DRIVER_KEY => 'google-translate-free',
+            'log_errors' => true
+        ],
+        'deepl' => [
+            TranslationManager::DRIVER_KEY => 'deepl',
+            'auth_key' => env('DEEPL_AUTH_KEY'),
+            'api_version' => 2,
+            'host' => 'api.deepl.com',
             'log_errors' => true
         ]
     ],

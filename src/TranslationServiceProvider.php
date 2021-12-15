@@ -13,6 +13,7 @@ use Twigger\Translate\Locale\DetectionStrategyStore;
 use Twigger\Translate\Locale\Strategies\HeaderDetectionStrategy;
 use Twigger\Translate\Locale\Strategies\FallbackDetectionStrategy;
 use Twigger\Translate\Translate\Handlers\AWSTranslator;
+use Twigger\Translate\Translate\Handlers\DeepLTranslator;
 use Twigger\Translate\Translate\Handlers\GoogleTranslateFreeTranslator;
 use Twigger\Translate\Translate\Handlers\NullTranslator;
 use Twigger\Translate\Translate\Handlers\StackTranslator;
@@ -288,6 +289,10 @@ class TranslationServiceProvider extends ServiceProvider
 
         Translate::pushDriver('google-translate-free', function ($app, $config) {
             return new GoogleTranslateFreeTranslator($config, new GoogleTranslate());
+        });
+
+        Translate::pushDriver('deepl', function ($app, $config) {
+            return new DeepLTranslator($config);
         });
 
         Translate::pushDriver('stack', function ($app, $config) {
