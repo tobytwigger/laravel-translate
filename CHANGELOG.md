@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.3] - (21/03/2022)
+
 ### Fixed
 - Error thrown with PHP 8 due to an optional parameter coming before a required one.
+
+### Added
+- Support for php 8.1 and laravel 9
+
+### Removed
+- Removed support for php 7.3
 
 ## [v0.2] - (12/01/2021)
 
